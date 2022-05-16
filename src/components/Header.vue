@@ -4,8 +4,7 @@
         <h2>MusicExplorer</h2>
     </div>
     <div class="menu_wrapper">
-        <input type="text" v-model="artist_name" placeholder="artist name">
-        <input type="submit" value="go" @click="onClick">
+        <input type="text" v-model="artist_name" placeholder="artist name" @keypress.enter="onSubmit">
     </div>
     
 </div>
@@ -28,6 +27,9 @@
         display: flex;
         align-items: center;
     }
+    .menu_wrapper input{
+        font-size:20px;
+    }
     
 </style>
 
@@ -44,7 +46,7 @@
             created(){
                 console.log("test");
             },
-            onClick(){
+            onSubmit(){
                 this.$emit('artist_name', this.artist_name);
             }
         }

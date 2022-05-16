@@ -47,7 +47,7 @@
                 console.log("test");
             },
             onSubmit(){
-                this.$emit('artist_name', this.artist_name);
+                this.$emit('searchMusic', this.artist_name);
             }
         }
     })

@@ -11,17 +11,25 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import axios from 'axios';
 
 export default Vue.extend({
   data(){
     return {
       target_artist_name: "",
-      target_musics: null
+      target_musics: [{}]
     };
   },
   methods: {
-    searchMusics(value){
+    searchMusics(value: string){
       this.target_artist_name = value;
+
+      // const url = "/music/list";
+      // const params = new URLSearchParams();
+      // params.append('artist_name', this.target_artist_name);
+      // axios.post(url, params).then((response) => {
+      //   this.target_musics = JSON.parse(response.data);
+      // });
 
       // test用
       this.target_musics = [

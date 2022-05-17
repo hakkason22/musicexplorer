@@ -35,13 +35,43 @@ export default Vue.extend({
       this.target_musics = [
         {
           music_name: 'lemon',
-          valence: 2,
-          arousal: 5,
+          valence: 0.2,
+          arousal: 0.5,
           music_url: "https//...."
         },
         {
           music_name: 'LOSER',
-          valence: 4,
+          valence: 0.4,
+          arousal: 0.1,
+          music_url: "https//...."
+        },
+        {
+          music_name: '曲３',
+          valence: 0.9,
+          arousal: 0.1,
+          music_url: "https//...."
+        },
+        {
+          music_name: '曲４',
+          valence: 0,
+          arousal: 0,
+          music_url: "https//...."
+        },
+        {
+          music_name: '曲５',
+          valence: 1,
+          arousal: 1,
+          music_url: "https//...."
+        },
+        {
+          music_name: '曲６',
+          valence: 1,
+          arousal: 0,
+          music_url: "https//...."
+        },
+        {
+          music_name: '曲７',
+          valence: 0,
           arousal: 1,
           music_url: "https//...."
         },

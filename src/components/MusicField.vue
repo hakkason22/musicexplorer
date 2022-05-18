@@ -2,7 +2,6 @@
     <div class="music_field_wrapper">
         <p class="search_result_headding">『{{ artistName }}』の検索結果</p>
         <MusicGraphArea :music-infos="musicInfos" />
-        <p>{{ musicInfos }}</p>
     </div>
 </template>
 <script lang="ts">

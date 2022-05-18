@@ -19,6 +19,9 @@ export default Vue.extend({
             svg: null,
             target_music_idx: "tes",
             plot_data: [],
+            chart_width: 800,
+            chart_height: 520,
+            chart_margin:  { "top": 40, "bottom": 80, "right": 40, "left": 80 }
         };
     },
     mounted() {
@@ -27,15 +30,13 @@ export default Vue.extend({
     },
     methods: {
         preprocess(){
-            console.log(document.body.clientWidth);
-            const width = document.body.clientWidth * 0.8;
 
             d3.selectAll('svg > *').remove()
             d3.selectAll('svg').remove()
             this.svg = d3.select('#chart')
                         .append('svg')
-                        .attr('width', width)
-                        .attr('height', 520)
+                        .attr('width', this.chart_width)
+                        .attr('height', this.chart_height)
                         .attr('class', "chart")
 
             this.musicInfos.forEach((element, idx) => {
@@ -46,11 +47,40 @@ export default Vue.extend({
         drawChart(){
             const xScale = d3.scaleLinear()
             .domain([0, 1])
-            .range([30, 1180]);
+            .range([this.chart_margin.left, this.chart_width - this.chart_margin.right]);
 
             const yScale = d3.scaleLinear()
             .domain([0, 1])
-            .range([30, 500]);
+            .range([this.chart_height - this.chart_margin.bottom, this.chart_margin.top]);
+
+            // 軸の表示
+            var axisx = d3.axisBottom(xScale).ticks(5);
+            var axisy = d3.axisLeft(yScale).ticks(5);
+
+            this.svg.append("g")
+                .attr("transform", "translate(" + 0 + "," + (this.chart_height - this.chart_margin.bottom) + ")")
+                .call(axisx)
+                .append("text")
+                .attr("fill", "black")
+                .attr("x", (this.chart_width - this.chart_margin.left - this.chart_margin.right) / 2 + this.chart_margin.left)
+                .attr("y", 50)
+                .attr("text-anchor", "middle")
+                .attr("font-size", "12pt")
+                .attr("font-weight", "middle")
+                .text("sad ↔️ happy");
+
+            this.svg.append("g")
+            .attr("transform", "translate(" + this.chart_margin.left + "," + 0 + ")")
+            .call(axisy)
+            .append("text")
+            .attr("fill", "black")
+            .attr("x", -(this.chart_height - this.chart_margin.top - this.chart_margin.bottom) / 2 - this.chart_margin.top)
+            .attr("text-anchor", "middle")
+            .attr("y", -50)
+            .attr("transform", "rotate(-90)")
+            .attr("font-weight", "middle")
+            .attr("font-size", "12pt")
+            .text("relax ↔️ excite");
 
             this.svg.append("g")
                 .selectAll("circle")

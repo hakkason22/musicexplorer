@@ -28,16 +28,24 @@ export default Vue.extend({
         this.preprocess();
         this.drawChart();
     },
+    watch:{
+        musicInfos: function(){
+            let chart_svg = document.getElementById('chart_svg');
+            let chart_svg_parent = chart_svg.parentNode;
+            this.plot_data = [];
+            this.svg = null;
+            chart_svg_parent.removeChild(chart_svg);
+            this.preprocess();
+            this.drawChart();
+        }
+    },
     methods: {
         preprocess(){
-
-            d3.selectAll('svg > *').remove()
-            d3.selectAll('svg').remove()
             this.svg = d3.select('#chart')
                         .append('svg')
                         .attr('width', this.chart_width)
                         .attr('height', this.chart_height)
-                        .attr('class', "chart")
+                        .attr('id', "chart_svg")
 
             this.musicInfos.forEach((element, idx) => {
                 element['music_idx'] = idx;

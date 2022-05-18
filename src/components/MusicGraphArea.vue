@@ -98,6 +98,12 @@ export default Vue.extend({
                     let el = document.getElementById("test_dom");
                     el.innerHTML = "<h1>" + music_url + "</h1>";
 
+                })
+                .on('mouseover', function () { 
+                    d3.select(this).style("cursor", "pointer").style("opacity", 0.8).style("r", "10px");
+                })
+                .on('mouseout', function(){
+                    d3.select(this).style("opacity", 1).style("r", "8px");
                 });
 
             // ラベルの表示

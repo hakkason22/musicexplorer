@@ -37,43 +37,43 @@ export default Vue.extend({
           music_name: 'lemon',
           valence: 0.2,
           arousal: 0.5,
-          music_url: "https//...."
+          music_url: "https//...1."
         },
         {
           music_name: 'LOSER',
           valence: 0.4,
           arousal: 0.1,
-          music_url: "https//...."
+          music_url: "https//....2"
         },
         {
           music_name: '曲３',
           valence: 0.9,
           arousal: 0.1,
-          music_url: "https//...."
+          music_url: "https//....3"
         },
         {
           music_name: '曲４',
           valence: 0,
           arousal: 0,
-          music_url: "https//...."
+          music_url: "https//....4"
         },
         {
           music_name: '曲５',
           valence: 1,
           arousal: 1,
-          music_url: "https//...."
+          music_url: "https//....5"
         },
         {
           music_name: '曲６',
           valence: 1,
           arousal: 0,
-          music_url: "https//...."
+          music_url: "https//....6"
         },
         {
           music_name: '曲７',
           valence: 0,
           arousal: 1,
-          music_url: "https//...."
+          music_url: "https//....7"
         },
       ];
     }

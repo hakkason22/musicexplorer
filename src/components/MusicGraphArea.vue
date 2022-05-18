@@ -2,8 +2,8 @@
   <div class="chart_wrapper">
     <div id="chart" class="chart_area">
     </div>
-    <div>
-        <h1 v-on:click="target_music_idx = 'aaa'">{{ target_music_idx }}</h1>
+    <div class="player_wrapper">
+        <span v-on:click="target_music_idx = 'aaa'" id="test_dom">{{ target_music_idx }}</span>
     </div>
   </div>
 </template>
@@ -35,7 +35,7 @@ export default Vue.extend({
             this.svg = d3.select('#chart')
                         .append('svg')
                         .attr('width', width)
-                        .attr('height', document.body.clientHeight)
+                        .attr('height', 520)
                         .attr('class', "chart")
 
             this.musicInfos.forEach((element, idx) => {
@@ -59,10 +59,16 @@ export default Vue.extend({
                 .append("circle")
                 .attr("cx", function(d) { return xScale(d['valence']); })
                 .attr("cy", function(d) { return yScale(d['arousal']); })
-                .attr("id", function(d) { return d['music_idx']; })
+                .attr("id", function(d) { return d['music_url']; })
                 .attr("fill", "#40e0d0")
                 .attr("r", "8px")
-                .on('click', function (data) { this.target_music_idx = data.target.id;});
+                .on('click', function (data) { 
+                    let music_url = data.target.id;
+                    
+                    let el = document.getElementById("test_dom");
+                    el.innerHTML = "<h1>" + music_url + "</h1>";
+
+                });
 
             // ラベルの表示
             this.svg.append("g")
@@ -82,12 +88,22 @@ export default Vue.extend({
 })
 </script>
 <style scoped>
+
     .chart_area{     
         padding: 30px;
-
+        margin: 0 auto;
     }
 
-
+    .player_wrapper{
+        border: 2px solid black;
+        border-radius: 30px;
+        width:40%;
+        position: absolute;
+        bottom: 2;
+        left: 0;
+        right: 0;
+        margin: auto;
+    }
 </style>
 
 

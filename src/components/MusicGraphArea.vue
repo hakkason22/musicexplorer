@@ -2,9 +2,7 @@
   <div class="chart_wrapper">
     <div id="chart" class="chart_area">
     </div>
-    <div class="player_wrapper">
-        <span v-on:click="target_music_idx = 'aaa'" id="test_dom">{{ target_music_idx }}</span>
-    </div>
+    <div class="player_wrapper" id="player_wrapper"></div>
   </div>
 </template>
 
@@ -78,17 +76,17 @@ export default Vue.extend({
                 .text("sad ↔️ happy");
 
             this.svg.append("g")
-            .attr("transform", "translate(" + this.chart_margin.left + "," + 0 + ")")
-            .call(axisy)
-            .append("text")
-            .attr("fill", "black")
-            .attr("x", -(this.chart_height - this.chart_margin.top - this.chart_margin.bottom) / 2 - this.chart_margin.top)
-            .attr("text-anchor", "middle")
-            .attr("y", -50)
-            .attr("transform", "rotate(-90)")
-            .attr("font-weight", "middle")
-            .attr("font-size", "12pt")
-            .text("relax ↔️ excite");
+                .attr("transform", "translate(" + this.chart_margin.left + "," + 0 + ")")
+                .call(axisy)
+                .append("text")
+                .attr("fill", "black")
+                .attr("x", -(this.chart_height - this.chart_margin.top - this.chart_margin.bottom) / 2 - this.chart_margin.top)
+                .attr("text-anchor", "middle")
+                .attr("y", -50)
+                .attr("transform", "rotate(-90)")
+                .attr("font-weight", "middle")
+                .attr("font-size", "12pt")
+                .text("relax ↔️ excite");
 
             this.svg.append("g")
                 .selectAll("circle")
@@ -101,10 +99,12 @@ export default Vue.extend({
                 .attr("fill", "#40e0d0")
                 .attr("r", "8px")
                 .on('click', function (data) { 
-                    let music_url = data.target.id;
+                    let music_id = data.target.id;
                     
-                    let el = document.getElementById("test_dom");
-                    el.innerHTML = "<h1>" + music_url + "</h1>";
+                    let el = document.getElementById("player_wrapper");
+                    el.innerHTML = '<iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/'
+                            + music_id
+                            + '?utm_source=generator" width="100%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>';
 
                 })
                 .on('mouseover', function () { 
@@ -139,8 +139,6 @@ export default Vue.extend({
     }
 
     .player_wrapper{
-        border: 2px solid black;
-        border-radius: 30px;
         width:40%;
         position: absolute;
         bottom: 2;

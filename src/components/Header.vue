@@ -4,6 +4,8 @@
         <h2>MusicExplorer</h2>
     </div>
     <div class="menu_wrapper">
+        <p>{{ user_name }}</p>
+        <p @click="signOut">ログアウト</p>
         <input type="text" v-model="artist_name" placeholder="artist name" @keypress.enter="onSubmit">
     </div>
     
@@ -31,6 +33,11 @@
         font-size:20px;
     }
     
+    .menu_wrapper p{
+        color:white;
+        margin-right:30px;
+        cursor: pointer;
+    }
 </style>
 
 <script lang="ts">
@@ -39,15 +46,23 @@
     export default Vue.extend({
         data(){
             return {
-                artist_name: ""
+                artist_name: "",
+                user_name: null
             };
         },
+        mounted(){
+            this.user_name = this.$store.getters.user.displayName
+        },
         methods: {
-            created(){
-                console.log("test");
-            },
             onSubmit(){
                 this.$emit('searchMusic', this.artist_name);
+            },
+            signOut(){
+                this.$store
+                .dispatch('signOut')
+                .then(() => {
+                    this.$router.push('/login')
+                })
             }
         }
     })

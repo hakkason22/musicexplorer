@@ -25,6 +25,8 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+    '~/plugins/firebase.js',
+    '~/plugins/firebase.auth.js'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -39,7 +41,12 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     "@nuxtjs/axios",
+    '@nuxtjs/auth',
   ],
+
+  router: {
+    middleware: 'authenticated'
+  },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {

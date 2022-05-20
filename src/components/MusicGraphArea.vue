@@ -15,10 +15,11 @@ export default Vue.extend({
     data(){
         return {
             svg: null,
-            target_music_idx: "tes",
+            valence_range: {},
+            energy_range: {},
             plot_data: [],
-            chart_width: 800,
-            chart_height: 520,
+            chart_width: 1300,
+            chart_height: 1020,
             chart_margin:  { "top": 40, "bottom": 80, "right": 40, "left": 80 }
         };
     },
@@ -45,18 +46,26 @@ export default Vue.extend({
                         .attr('height', this.chart_height)
                         .attr('id', "chart_svg")
 
+            let valence_list:number[] = [];
+            let energy_list = [];
             this.musicInfos.forEach((element, idx) => {
                 element['music_idx'] = idx;
                 this.plot_data.push(element);
+                valence_list.push(element['valence']);
+                energy_list.push(element['energy']);
             });
+            this.valence_range['max'] = Math.max(...valence_list);
+            this.valence_range['min'] = Math.min(...valence_list);
+            this.energy_range['max'] = Math.max(...energy_list);
+            this.energy_range['min'] = Math.min(...energy_list);
         },
         drawChart(){
             const xScale = d3.scaleLinear()
-            .domain([0, 1])
+            .domain([this.valence_range['min'], this.valence_range['max']])
             .range([this.chart_margin.left, this.chart_width - this.chart_margin.right]);
 
             const yScale = d3.scaleLinear()
-            .domain([0, 1])
+            .domain([this.energy_range['min'], this.energy_range['max']])
             .range([this.chart_height - this.chart_margin.bottom, this.chart_margin.top]);
 
             // 軸の表示
@@ -94,10 +103,10 @@ export default Vue.extend({
                 .enter()
                 .append("circle")
                 .attr("cx", function(d) { return xScale(d['valence']); })
-                .attr("cy", function(d) { return yScale(d['arousal']); })
-                .attr("id", function(d) { return d['music_url']; })
+                .attr("cy", function(d) { return yScale(d['energy']); })
+                .attr("id", function(d) { return d['music_id']; })
                 .attr("fill", "#40e0d0")
-                .attr("r", "8px")
+                .attr("r", "5px")
                 .on('click', function (data) { 
                     let music_id = data.target.id;
                     
@@ -111,7 +120,7 @@ export default Vue.extend({
                     d3.select(this).style("cursor", "pointer").style("opacity", 0.8).style("r", "10px");
                 })
                 .on('mouseout', function(){
-                    d3.select(this).style("opacity", 1).style("r", "8px");
+                    d3.select(this).style("opacity", 1).style("r", "5px");
                 });
 
             // ラベルの表示
@@ -121,27 +130,35 @@ export default Vue.extend({
                 .enter()
                 .append("text")
                 .attr("x", function(d) { return xScale(d['valence']); })
-                .attr("y", function(d,) { return yScale(d['arousal']); })
+                .attr("y", function(d,) { return yScale(d['energy']); })
                 .text(function(d){ return d['music_name'];})
-                .attr("dy", "-18px")
-                .attr("fill", "#999999")
-                .attr("font-size", "12px")
-                .attr('text-anchor', "middle"); 
+                .attr("dx", "15px")
+                .attr("dy", "-5px")
+                .attr("fill", "black")
+                .attr("font-size", "10px")
+                .attr('text-anchor', "middle")
+                .style('pointer-events', 'none'); 
         },
     },
 })
 </script>
 <style scoped>
 
+    .chart_wrapper{
+        padding-bottom:60px;
+    }
+
     .chart_area{     
         padding: 30px;
         margin: 0 auto;
+        text-align: center;
+       
     }
 
     .player_wrapper{
-        width:40%;
-        position: absolute;
-        bottom: 2;
+        width: 40%;
+        position: fixed;
+        bottom: 0;
         left: 0;
         right: 0;
         margin: auto;

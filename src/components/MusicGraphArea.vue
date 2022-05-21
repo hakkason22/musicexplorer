@@ -1,7 +1,6 @@
 <template>
   <div class="chart_wrapper">
-    <div id="chart" class="chart_area">
-    </div>
+    <div id="chart" class="chart_area"></div>
     <div class="player_wrapper" id="player_wrapper"></div>
   </div>
 </template>
@@ -20,10 +19,12 @@ export default Vue.extend({
             plot_data: [],
             chart_width: 1300,
             chart_height: 1020,
-            chart_margin:  { "top": 40, "bottom": 80, "right": 40, "left": 80 }
+            chart_margin:  { "top": 40, "bottom": 80, "right": 40, "left": 80 },
+            favorite_music_id_list: [],
         };
     },
     mounted() {
+        this.$nuxt.$on('addFavoriteToChart', this.addUpdateData);
         this.preprocess();
         this.drawChart();
     },
@@ -49,7 +50,14 @@ export default Vue.extend({
             let valence_list:number[] = [];
             let energy_list = [];
             this.musicInfos.forEach((element, idx) => {
-                element['music_idx'] = idx;
+                // お気に入り曲はグラフパラメータを変える
+                if(this.favorite_music_id_list.includes(element['music_id'])){
+                    element['color'] = "blue";
+                    element['label_color'] = "red";
+                }else{
+                    element['color'] = "#40e0d0";
+                    element['label_color'] = "black";
+                }
                 this.plot_data.push(element);
                 valence_list.push(element['valence']);
                 energy_list.push(element['energy']);
@@ -105,13 +113,14 @@ export default Vue.extend({
                 .attr("cx", function(d) { return xScale(d['valence']); })
                 .attr("cy", function(d) { return yScale(d['energy']); })
                 .attr("id", function(d) { return d['music_id']; })
-                .attr("fill", "#40e0d0")
+                .attr("fill", function(d) { return d['color'] })
                 .attr("r", "5px")
                 .on('click', function (data) { 
+                    // クリックイベント
                     let music_id = data.target.id;
-                    
                     let el = document.getElementById("player_wrapper");
-                    el.innerHTML = '<iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/'
+                    el.innerHTML =
+                            '<iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/'
                             + music_id
                             + '?utm_source=generator" width="100%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>';
 
@@ -120,6 +129,7 @@ export default Vue.extend({
                     d3.select(this).style("cursor", "pointer").style("opacity", 0.8).style("r", "10px");
                 })
                 .on('mouseout', function(){
+                    console.log(this)
                     d3.select(this).style("opacity", 1).style("r", "5px");
                 });
 
@@ -134,11 +144,18 @@ export default Vue.extend({
                 .text(function(d){ return d['music_name'];})
                 .attr("dx", "15px")
                 .attr("dy", "-5px")
-                .attr("fill", "black")
+                .attr("fill", function(d){ return d['label_color'];})
                 .attr("font-size", "10px")
                 .attr('text-anchor', "middle")
                 .style('pointer-events', 'none'); 
         },
+        registerFavorite(){
+            console.log("testtttttt");
+        },
+        addUpdateData(targetMusicInfo){
+            this.favorite_music_id_list.push(targetMusicInfo.music_id)
+            this.musicInfos.push(targetMusicInfo)
+        }
     },
 })
 </script>
@@ -162,6 +179,11 @@ export default Vue.extend({
         left: 0;
         right: 0;
         margin: auto;
+    }
+
+    .favo_area{
+        font-size: 30px;
+        color: red;
     }
 </style>
 

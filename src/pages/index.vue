@@ -1,5 +1,6 @@
 <template>
   <Main>
+    <FavariteModal v-if="$store.state.show_favorite_modal_flag" />
     <Header @searchMusic='searchMusics' />
     <Top v-if="target_artist_name == ''"/>
     <ErrorMessage v-else-if="error_flag" />
@@ -22,6 +23,9 @@ export default Vue.extend({
       error_flag: false,
     };
   },
+  mounted(){
+    this.$store.commit('closeFavoriteModal');
+  },
   methods: {
     searchMusics(value: string){
       //this.error_flag = false;
@@ -31,16 +35,13 @@ export default Vue.extend({
       const params = new URLSearchParams();
       params.append('artist_name', this.target_artist_name);
       
-          axios.post(url, params).then((response) => {
-            
-              console.log(response.data);
-              this.target_musics = response.data;
-              if('message' in this.target_musics){
-                this.error_flag = true;
-              }
-                
-            
-          });
+      axios.post(url, params).then((response) => {
+          console.log(response.data);
+          this.target_musics = response.data;
+          if('message' in this.target_musics){
+            this.error_flag = true;
+          }
+      });
       
     },
   },

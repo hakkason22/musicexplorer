@@ -1,14 +1,16 @@
 <template>
-  <Main>
+  <div>
     <FavariteModal v-if="$store.state.show_favorite_modal_flag" />
     <Header @searchMusic='searchMusics' />
-    <Top v-if="target_artist_name == ''"/>
-    <ErrorMessage v-else-if="error_flag" />
-    <MusicField v-else 
-      :music-infos="target_musics" 
-      :artist-name="target_artist_name"
-     />
-  </Main>
+    <div class="container">
+      <Top v-if="target_artist_name == ''"/>
+      <ErrorMessage v-else-if="error_flag" />
+      <MusicField v-else 
+        :music-infos="target_musics" 
+        :artist-name="target_artist_name"
+      />
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -19,7 +21,7 @@ export default Vue.extend({
   data(){
     return {
       target_artist_name: "",
-      target_musics: [{}],
+      target_musics: [],
       error_flag: false,
     };
   },
@@ -47,3 +49,10 @@ export default Vue.extend({
   },
 })
 </script>
+<style>
+  .container{
+    background: black;
+    min-height: 120vh;
+    opacity: 0.9;
+  }
+</style>

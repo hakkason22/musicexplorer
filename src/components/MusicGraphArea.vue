@@ -1,6 +1,8 @@
 <template>
   <div class="chart_wrapper">
-    <div id="chart" class="chart_area"></div>
+    <div id="chart" class="chart_area">
+        <img class="chart_img" src="../images/russel.png" alt="">
+    </div>
     <div class="player_wrapper" id="player_wrapper"></div>
   </div>
 </template>
@@ -17,9 +19,9 @@ export default Vue.extend({
             valence_range: {},
             energy_range: {},
             plot_data: [],
-            chart_width: 1300,
+            chart_width: 1350,
             chart_height: 1020,
-            chart_margin:  { "top": 40, "bottom": 80, "right": 40, "left": 80 },
+            chart_margin:  { "top": 40, "bottom": 80, "right": 90, "left": 130 },
             favorite_music_id_list: [],
         };
     },
@@ -77,33 +79,33 @@ export default Vue.extend({
             .range([this.chart_height - this.chart_margin.bottom, this.chart_margin.top]);
 
             // 軸の表示
-            var axisx = d3.axisBottom(xScale).ticks(5);
-            var axisy = d3.axisLeft(yScale).ticks(5);
+            // var axisx = d3.axisBottom(xScale).ticks(5);
+            // var axisy = d3.axisLeft(yScale).ticks(5);
 
-            this.svg.append("g")
-                .attr("transform", "translate(" + 0 + "," + (this.chart_height - this.chart_margin.bottom) + ")")
-                .call(axisx)
-                .append("text")
-                .attr("fill", "black")
-                .attr("x", (this.chart_width - this.chart_margin.left - this.chart_margin.right) / 2 + this.chart_margin.left)
-                .attr("y", 50)
-                .attr("text-anchor", "middle")
-                .attr("font-size", "12pt")
-                .attr("font-weight", "middle")
-                .text("sad ↔️ happy");
+            // this.svg.append("g")
+            //     .attr("transform", "translate(" + 0 + "," + (this.chart_height - this.chart_margin.bottom) + ")")
+            //     .call(axisx)
+            //     .append("text")
+            //     .attr("fill", "black")
+            //     .attr("x", (this.chart_width - this.chart_margin.left - this.chart_margin.right) / 2 + this.chart_margin.left)
+            //     .attr("y", 50)
+            //     .attr("text-anchor", "middle")
+            //     .attr("font-size", "12pt")
+            //     .attr("font-weight", "middle")
+            //     .text("sad ↔️ happy");
 
-            this.svg.append("g")
-                .attr("transform", "translate(" + this.chart_margin.left + "," + 0 + ")")
-                .call(axisy)
-                .append("text")
-                .attr("fill", "black")
-                .attr("x", -(this.chart_height - this.chart_margin.top - this.chart_margin.bottom) / 2 - this.chart_margin.top)
-                .attr("text-anchor", "middle")
-                .attr("y", -50)
-                .attr("transform", "rotate(-90)")
-                .attr("font-weight", "middle")
-                .attr("font-size", "12pt")
-                .text("relax ↔️ excite");
+            // this.svg.append("g")
+            //     .attr("transform", "translate(" + this.chart_margin.left + "," + 0 + ")")
+            //     .call(axisy)
+            //     .append("text")
+            //     .attr("fill", "black")
+            //     .attr("x", -(this.chart_height - this.chart_margin.top - this.chart_margin.bottom) / 2 - this.chart_margin.top)
+            //     .attr("text-anchor", "middle")
+            //     .attr("y", -50)
+            //     .attr("transform", "rotate(-90)")
+            //     .attr("font-weight", "middle")
+            //     .attr("font-size", "12pt")
+            //     .text("relax ↔️ excite");
 
             this.svg.append("g")
                 .selectAll("circle")
@@ -166,10 +168,20 @@ export default Vue.extend({
     }
 
     .chart_area{     
-        padding: 30px;
+        padding: 20px;
         margin: 0 auto;
         text-align: center;
-       
+        position:relative;
+    }
+
+    .chart_img{
+        z-index: -1;
+        position:absolute;
+        left:0;
+        right:0;
+        margin: 0 auto;
+        width:1300px;
+        height:1020px;
     }
 
     .player_wrapper{

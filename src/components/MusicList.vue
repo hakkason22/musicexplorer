@@ -66,6 +66,10 @@ export default Vue.extend({
     .list_message{
         font-size:22px;
         color:black;
+        padding:0 10px;
+        display: inline-block;
+        border-radius: 30px;
+        background: #fff;
     }
     .list_message span{
         cursor: pointer;
@@ -79,15 +83,18 @@ export default Vue.extend({
         padding:5px 10px;
         background: black;
         color: white;
-        margin-bottom: 5px;
         cursor:pointer;
         flex: 0 0 auto;
+        margin-top:5px;
     }
     .music_info:hover{
         opacity: 0.8;
         background: blue;
     }
     .music_list_wrapper{
-        width: 100%;        
+        width: 1300px;
+        margin: 0 auto;        
+       
+       
     }
 </style>

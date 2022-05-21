@@ -13,7 +13,7 @@
 </script>
 <style scoped>
     .music_field_wrapper{
-        margin: 30px;
+        padding: 30px 0;
     }
     .search_result_headding{
         font-size:20px;

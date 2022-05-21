@@ -36,6 +36,7 @@ export default {
   buildModules: [
     // https://go.nuxtjs.dev/typescript
     '@nuxt/typescript-build',
+    '@nuxtjs/fontawesome',
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -43,6 +44,12 @@ export default {
     "@nuxtjs/axios",
     '@nuxtjs/auth',
   ],
+
+  fontawesome: {
+    icons: {
+      solid: true,
+    }
+  },
 
   router: {
     middleware: 'authenticated'

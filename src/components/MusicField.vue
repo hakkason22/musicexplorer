@@ -1,6 +1,6 @@
 <template>
     <div class="music_field_wrapper">
-        <p class="search_result_headding">『{{ artistName }}』の検索結果</p>
+        <MusicList  :music-infos="musicInfos" :artist-name="artistName" />
         <MusicGraphArea :music-infos="musicInfos" />
     </div>
 </template>

@@ -25,7 +25,7 @@ export default Vue.extend({
     props: ["musicInfos", "artistName"],
     data(){
         return{
-            show_flag: -1,
+            show_flag: 1,
         };
     },
     methods: {

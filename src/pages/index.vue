@@ -31,17 +31,20 @@ export default Vue.extend({
   methods: {
     searchMusics(value: string){
       //this.error_flag = false;
-      this.target_artist_name = value;
 
       const url = "http://52.192.42.106/music/list";
       const params = new URLSearchParams();
-      params.append('artist_name', this.target_artist_name);
+      params.append('artist_name', value);
       
       axios.post(url, params).then((response) => {
           console.log(response.data);
           this.target_musics = response.data;
           if('message' in this.target_musics){
+            console.log("error")
             this.error_flag = true;
+            console.log(this.error_flag)
+          }else{
+            this.target_artist_name = this.target_musics[0]['artist_name'];
           }
       });
       

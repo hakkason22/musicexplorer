@@ -57,7 +57,7 @@ export default Vue.extend({
                     element['color'] = "blue";
                     element['label_color'] = "red";
                 }else{
-                    element['color'] = "#40e0d0";
+                    element['color'] = "#00fa9a";
                     element['label_color'] = "black";
                 }
                 this.plot_data.push(element);
@@ -116,7 +116,7 @@ export default Vue.extend({
                 .attr("cy", function(d) { return yScale(d['energy']); })
                 .attr("id", function(d) { return d['music_id']; })
                 .attr("fill", function(d) { return d['color'] })
-                .attr("r", "5px")
+                .attr("r", "8px")
                 .on('click', function (data) { 
                     // クリックイベント
                     let music_id = data.target.id;
@@ -131,8 +131,7 @@ export default Vue.extend({
                     d3.select(this).style("cursor", "pointer").style("opacity", 0.8).style("r", "10px");
                 })
                 .on('mouseout', function(){
-                    console.log(this)
-                    d3.select(this).style("opacity", 1).style("r", "5px");
+                    d3.select(this).style("opacity", 1).style("r", "8px");
                 });
 
             // ラベルの表示
@@ -147,12 +146,9 @@ export default Vue.extend({
                 .attr("dx", "15px")
                 .attr("dy", "-5px")
                 .attr("fill", function(d){ return d['label_color'];})
-                .attr("font-size", "10px")
+                .attr("font-size", "12px")
                 .attr('text-anchor', "middle")
-                .style('pointer-events', 'none'); 
-        },
-        registerFavorite(){
-            console.log("testtttttt");
+                .style('pointer-events', 'none');
         },
         addUpdateData(targetMusicInfo){
             this.favorite_music_id_list.push(targetMusicInfo.music_id)

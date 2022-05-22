@@ -147,8 +147,9 @@ export default Vue.extend({
         border:2px solid #aaa;
         background:#fff;
         z-index:2;
-        min-height: 600px;
-        border-radius:20px;
+        height: 600px;
+        /* border-radius:20px; */
+        overflow-y: scroll;
     }
     .close_button{
         display: flex;

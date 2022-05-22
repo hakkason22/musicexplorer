@@ -2,7 +2,7 @@
     <div class="top_wrapper">
         <div class="message_wrapper">
             <h1 class="top_message">welcome to MusicExplorer, </h1>
-            <p class="top_message">search your favrite artists.</p>
+            <p class="top_message">search your favorite artists.</p>
         </div>
     </div>
 </template>

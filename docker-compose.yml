@@ -1,11 +1,9 @@
 version: '3.8'
 services:
   nuxt:
-    build: ./docker/nuxt
+    build: ./nuxt
     ports:
       - 9000:3000
     volumes:
-      - ./src:/workspace
+      - ./nuxt/src:/workspace
     working_dir: /workspace
-    command: yarn run dev
-

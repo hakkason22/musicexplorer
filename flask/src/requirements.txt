@@ -1,0 +1,6 @@
+spotipy
+mysql-connector-python
+Flask
+flask_cors
+cryptography
+python-dotenv

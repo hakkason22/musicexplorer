@@ -10,6 +10,7 @@ import time
 import re
 import itertools
 from difflib import SequenceMatcher
+import os
 
 
 class Sf:
@@ -19,7 +20,7 @@ class Sf:
     def __init__(self) -> None:
         # 初期化
         self.spotify = spotipy.Spotify(
-            client_credentials_manager=SpotifyClientCredentials(),
+            client_credentials_manager=SpotifyClientCredentials(client_id = os.environ['SPOTIFY_CLIENT_ID'], client_secret = os.environ['SPOTIFY_SECRET_ID']),
             language='ja')
 
     def requestToSpotify(self, artist_name: str = None) -> dict:

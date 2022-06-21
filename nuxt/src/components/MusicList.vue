@@ -34,7 +34,7 @@ export default Vue.extend({
         },
         registerFavorite(musicInfo){
             if(confirm('「' + musicInfo.music_name + '」 をお気に入り曲に登録しますか？')){
-                const url = "http://52.192.42.106/music/favorite/register";
+                const url = "http://localhost:5000/music/favorite/register";
                 const params = new URLSearchParams();
                 params.append('music_name', musicInfo.music_name);
                 params.append('valence', musicInfo.valence);

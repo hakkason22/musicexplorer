@@ -32,7 +32,7 @@ export default Vue.extend({
     searchMusics(value: string){
       //this.error_flag = false;
 
-      const url = "http://52.192.42.106/music/list";
+      const url = "http://localhost:5000/music/list";
       const params = new URLSearchParams();
       params.append('artist_name', value);
       

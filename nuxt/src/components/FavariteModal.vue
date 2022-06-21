@@ -52,7 +52,7 @@ export default Vue.extend({
         },
         getFavoriteMusicInfo(){
             const user_id: string = this.$store.getters.user.uid
-            const url: string = "http://52.192.42.106/music/favorite/list"
+            const url: string = "http://localhost:5000/music/favorite/list"
             const params: any = new URLSearchParams()
             params.append('user_id', user_id)
             axios.post(url, params).then((response) => {

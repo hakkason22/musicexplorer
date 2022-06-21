@@ -1,9 +1,31 @@
 version: '3.8'
 services:
-  nuxt:
+  nuxt-front:
     build: ./nuxt
     ports:
       - 9000:3000
     volumes:
       - ./nuxt/src:/workspace
     working_dir: /workspace
+  flask-back:
+    build: ./flask
+    ports:
+      - 5000:5000
+    volumes:
+      - ./flask/src:/workspace
+    env_file:
+      - ./.env
+  db-mysql:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER_NAME}
+      MYSQL_PASSWORD: ${DB_USER_PASS}
+    volumes:
+      - db-storage:/var/lib/mysql
+    ports:
+      - ${DB_PORT}:3306
+    platform: linux/x86_64
+volumes:
+  db-storage:

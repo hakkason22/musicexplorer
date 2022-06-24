@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request, render_template, redirect, url_for
 from flask_cors import CORS
 import sys
-# from dotenv import load_dotenv
+from dotenv import load_dotenv
 import json
 import os
 from sf import Sf
@@ -9,7 +9,7 @@ from db import DB
 from myException import unknownError
 
 app = Flask(__name__)
-# load_dotenv()  # .envファイルの内容を環境変数として読み込み
+load_dotenv()  # .envファイルの内容を環境変数として読み込み
 CORS(
     app,
     supports_credentials=True

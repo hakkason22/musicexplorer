@@ -22,8 +22,10 @@ services:
       MYSQL_DATABASE: ${DB_NAME}
       MYSQL_USER: ${DB_USER_NAME}
       MYSQL_PASSWORD: ${DB_USER_PASS}
+    working_dir: /workspace
     volumes:
       - db-storage:/var/lib/mysql
+      - ./mysql:/workspace
     ports:
       - ${DB_PORT}:3306
     platform: linux/x86_64

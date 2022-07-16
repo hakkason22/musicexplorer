@@ -11,7 +11,7 @@ export default Vue.extend({
         }
     },
     methods: {
-        googleLogin: function(err) {
+        googleLogin: function(err: any) {
             this.$store
                 .dispatch('signInWithGoogle')
                 .then(() => {
@@ -19,7 +19,7 @@ export default Vue.extend({
                         name: 'index'
                     })
                 })
-                .catch((err) => {
+                .catch((err: any) => {
                     this.error_msg =
                         '現在Googleでのログインは使用できません。後ほどお試しください。'
                 })

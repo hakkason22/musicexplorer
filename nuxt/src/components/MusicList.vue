@@ -21,6 +21,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import axios from 'axios'
+import { Music } from '../pages/index.vue'
 export default Vue.extend({
     props: ["musicInfos", "artistName"],
     data(){
@@ -32,13 +33,13 @@ export default Vue.extend({
         toggle_list(){
             this.show_flag *= -1;
         },
-        registerFavorite(musicInfo){
+        registerFavorite(musicInfo: Music){
             if(confirm('「' + musicInfo.music_name + '」 をお気に入り曲に登録しますか？')){
                 const url = "http://localhost:5000/music/favorite/register";
                 const params = new URLSearchParams();
                 params.append('music_name', musicInfo.music_name);
-                params.append('valence', musicInfo.valence);
-                params.append('energy', musicInfo.energy);
+                params.append('valence', String(musicInfo.valence));
+                params.append('energy', String(musicInfo.energy));
                 params.append('music_id', musicInfo.music_id);
                 params.append('user_id', this.$store.getters.user.uid);
                 
@@ -47,8 +48,8 @@ export default Vue.extend({
                 });
             }
         },
-        displayPlayer(music_id){
-            let el = document.getElementById("player_wrapper");
+        displayPlayer(music_id: string){
+            let el: any = document.getElementById("player_wrapper");
             el.innerHTML =
                     '<iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/'
                     + music_id

@@ -17,11 +17,21 @@
 import Vue from 'vue'
 import axios from 'axios';
 
+export interface Music {
+  artist_name: string;
+  color: string;
+  label_color: string;
+  music_id: string;
+  music_name: string;
+  energy: number;
+  valence: number;
+}
+
 export default Vue.extend({
   data(){
     return {
       target_artist_name: "",
-      target_musics: [],
+      target_musics: [] as Array<Music>,
       error_flag: false,
     };
   },

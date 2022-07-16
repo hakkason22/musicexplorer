@@ -9,20 +9,26 @@
 
 <script lang="ts">
 import * as d3 from 'd3'
-
 import Vue from 'vue'
+import { Music } from '../pages/index.vue'
+
+interface Range {
+    max: number;
+    min: number;
+}
+
 export default Vue.extend({
     props: ["musicInfos"],
     data(){
         return {
-            svg: null,
-            valence_range: {},
-            energy_range: {},
-            plot_data: [],
+            svg: null as any,
+            valence_range: {} as Range,
+            energy_range: {} as Range,
+            plot_data: [] as Array<Music>,
             chart_width: 1350,
             chart_height: 1020,
             chart_margin:  { "top": 40, "bottom": 80, "right": 90, "left": 130 },
-            favorite_music_id_list: [],
+            favorite_music_id_list: [] as Array<string>,
         };
     },
     mounted() {
@@ -32,11 +38,11 @@ export default Vue.extend({
     },
     watch:{
         musicInfos: function(){
-            let chart_svg = document.getElementById('chart_svg');
+            let chart_svg: any = document.getElementById('chart_svg');
             let chart_svg_parent = chart_svg.parentNode;
             this.plot_data = [];
             this.svg = null;
-            chart_svg_parent.removeChild(chart_svg);
+            chart_svg_parent!.removeChild(chart_svg);
             this.preprocess();
             this.drawChart();
         }
@@ -49,9 +55,9 @@ export default Vue.extend({
                         .attr('height', this.chart_height)
                         .attr('id', "chart_svg")
 
-            let valence_list:number[] = [];
-            let energy_list = [];
-            this.musicInfos.forEach((element, idx) => {
+            let valence_list: number[] = [];
+            let energy_list: number[] = [];
+            this.musicInfos.forEach((element: Music, idx: number) => {
                 // お気に入り曲はグラフパラメータを変える
                 if(this.favorite_music_id_list.includes(element['music_id'])){
                     element['color'] = "blue";
@@ -112,15 +118,15 @@ export default Vue.extend({
                 .data(this.plot_data)
                 .enter()
                 .append("circle")
-                .attr("cx", function(d) { return xScale(d['valence']); })
-                .attr("cy", function(d) { return yScale(d['energy']); })
-                .attr("id", function(d) { return d['music_id']; })
-                .attr("fill", function(d) { return d['color'] })
+                .attr("cx", function(d: Music) { return xScale(d['valence']); })
+                .attr("cy", function(d: Music) { return yScale(d['energy']); })
+                .attr("id", function(d: Music) { return d['music_id']; })
+                .attr("fill", function(d: Music) { return d['color'] })
                 .attr("r", "8px")
-                .on('click', function (data) { 
+                .on('click', function (data: any) { 
                     // クリックイベント
                     let music_id = data.target.id;
-                    let el = document.getElementById("player_wrapper");
+                    let el: any = document.getElementById("player_wrapper");
                     el.innerHTML =
                             '<iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/'
                             + music_id
@@ -140,17 +146,17 @@ export default Vue.extend({
                 .data(this.plot_data)
                 .enter()
                 .append("text")
-                .attr("x", function(d) { return xScale(d['valence']); })
-                .attr("y", function(d,) { return yScale(d['energy']); })
-                .text(function(d){ return d['music_name'];})
+                .attr("x", function(d: Music) { return xScale(d['valence']); })
+                .attr("y", function(d: Music) { return yScale(d['energy']); })
+                .text(function(d: Music){ return d['music_name'];})
                 .attr("dx", "15px")
                 .attr("dy", "-5px")
-                .attr("fill", function(d){ return d['label_color'];})
+                .attr("fill", function(d: Music){ return d['label_color'];})
                 .attr("font-size", "12px")
                 .attr('text-anchor', "middle")
                 .style('pointer-events', 'none');
         },
-        addUpdateData(targetMusicInfo){
+        addUpdateData(targetMusicInfo: Music){
             this.favorite_music_id_list.push(targetMusicInfo.music_id)
             this.musicInfos.push(targetMusicInfo)
         }

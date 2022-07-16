@@ -1,6 +1,6 @@
 -- MariaDB dump 10.19  Distrib 10.8.3-MariaDB, for osx10.17 (x86_64)
 --
--- Host: localhost    Database: musicexplorer_db
+-- Host: localhost    Database: musicexplorer
 -- ------------------------------------------------------
 -- Server version	10.8.3-MariaDB
 

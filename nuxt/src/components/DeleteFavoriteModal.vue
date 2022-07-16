@@ -68,7 +68,7 @@ export default Vue.extend({
                 console.log(response.data)
             })
             // reload
-            this.$router.go({path: this.$router.currentRoute.path, force: true})
+            location.reload()
         }
     }
 })

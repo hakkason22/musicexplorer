@@ -7,6 +7,7 @@ services:
     volumes:
       - ./nuxt/src:/workspace
     working_dir: /workspace
+    platform: linux/x86_64
   flask-back:
     build: ./flask
     ports:

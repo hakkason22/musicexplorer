@@ -9,7 +9,7 @@ from common.MusicController import Sf
 from exception.MyException import unknownError
 
 app = Flask(__name__)
-load_dotenv()  # .envファイルの内容を環境変数として読み込み
+load_dotenv()  # .envファイルの内容を環境変数として読み込みん
 CORS(
     app,
     supports_credentials=True

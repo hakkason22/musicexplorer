@@ -3,7 +3,8 @@ import mysql.connector
 import sys
 import os
 
-
+# ここは別のライブラリを使う
+# またモデルを介してデータベースにアクセスする
 class DB:
     def __init__(self):
         # データベースとの接続を開始

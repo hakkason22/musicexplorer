@@ -4,9 +4,9 @@ import sys
 from dotenv import load_dotenv
 import json
 import os
-from sf import Sf
-from db import DB
-from myException import unknownError
+from common.FavoriteMusicController import DB
+from common.MusicController import Sf
+from exception.MyException import unknownError
 
 app = Flask(__name__)
 load_dotenv()  # .envファイルの内容を環境変数として読み込み

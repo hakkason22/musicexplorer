@@ -1,0 +1,29 @@
+@startuml musicexplorer_usecase_diagram
+' left to right direction
+
+actor guest
+actor user
+
+rectangle MusicExplorer{
+    guest -- (login)
+    user -- (serch_musics)
+    user -- (view_musics)
+    user -- (manage_favorite_musics)
+}
+
+rectangle MusicExplorer_API{
+    (serch_musics) ..> (get_music_lists):include
+    (manage_favorite_musics) ..> (manage_database):include
+}
+
+rectangle Spotify_API{
+    (get_music_lists) ..> (use_api):include
+}
+
+' user --> (Use MusicExplorer)
+' (Use MusicExplorer) <.. (Serch Music):<<include>>
+' (Use MusicExplorer) <.. (Register Favorite Music):<<include>>
+' (Serch Music) <.. (Provide MusicList):<<include>>
+' (Register Favorite Music) <.. (Provide ):<<include>>
+
+@enduml

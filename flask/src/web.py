@@ -45,10 +45,10 @@ def send_music_list():
     Returns:
         str: json形式の楽曲リストを返す
     """
-    sf1 = MusicController()
+    music_controller = MusicController()
     artist_name = str(request.form.get("artist_name"))
     # アーティスト名から楽曲リストを持ってくる
-    re = sf1.requestToSpotify(artist_name)
+    re = music_controller.requestToSpotify(artist_name)
     return jsonify(re)
 
 
@@ -59,21 +59,21 @@ def favoriteManager(purpose: str):
         purpose (str): 可変urlパラメータ
     """
     if purpose == 'register':
-        db = FavoriteMusicController()
+        favorite_controller = FavoriteMusicController()
         data = request.form.to_dict()
-        re = db.register(data)
+        re = favorite_controller.register(data)
         # print(re)
         return jsonify(re)
 
     elif purpose == 'list':
-        db = FavoriteMusicController()
+        favorite_controller = FavoriteMusicController()
         user_id = request.form.get('user_id')
-        re = db.getlist(user_id)
+        re = favorite_controller.getlist(user_id)
         return jsonify(re)
     elif purpose == 'delete':
-        db = FavoriteMusicController()
+        favorite_controller = FavoriteMusicController()
         id_ = request.form.get('id')
-        re = db.delete(id_)
+        re = favorite_controller.delete(id_)
         return jsonify(re)
     else:
         return jsonify(unknownError())

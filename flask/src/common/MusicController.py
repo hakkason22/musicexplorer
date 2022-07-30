@@ -5,14 +5,16 @@
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 import json
-from myException import noTracks, incorrectParam, noArtists
+from exception.MyException import noTracks, incorrectParam, noArtists
 import time
 import re
 import itertools
 from difflib import SequenceMatcher
 import os
 
-
+# SpotifyAPIへのリクエスト処理を別クラスへカプセル化
+# このクラスからそのモジュールを使う
+# ただ、もしかしたら、やる必要ないかも？
 class Sf:
     """SpotifyAPIとのやりとり用のクラス
     """

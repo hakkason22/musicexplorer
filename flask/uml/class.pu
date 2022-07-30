@@ -1,0 +1,39 @@
+@startuml musicexplorer_class_diagram
+
+'favorite_musicsテーブルのモデルクラス
+class FavoriteMusic{
+    + get_music_list()
+    + register()
+    + delete()
+}
+
+'SportifyAPIと直接やりとりするクラス
+class SpotifyAPI{
+    - request_api()
+    + serch_artist()
+    + get_music_list_by_artist_id()
+}
+
+'楽曲取得時などにエントリーポイントから呼び出される
+class MusicController{
+    - spotify
+    + get_music_list()
+}
+
+'お気に入り曲の管理時にエントリーポイントから呼び出される
+class FavoriteMusicController{
+    + get_music_list()
+    + register()
+    + delete()
+}
+
+'例外処理これでいいのか？
+'いったん省略
+class MyException(){
+
+}
+
+MusicController -- SpotifyAPI
+FavoriteMusicController -- FavoriteMusic
+
+@enduml

@@ -5,7 +5,7 @@ import os
 
 # ここは別のライブラリを使う
 # またモデルを介してデータベースにアクセスする
-class DB:
+class FavoriteMusicController:
     def __init__(self):
         # データベースとの接続を開始
         try:
@@ -20,6 +20,9 @@ class DB:
         except Exception as e:
             print('[DB Connection Error]', e)
             sys.exit(1)
+    
+    def index():
+        pass
 
     def register(self, data: dict):
         try:

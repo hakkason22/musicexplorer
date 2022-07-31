@@ -17,11 +17,13 @@ class SpotifyAPI{
 '楽曲取得時などにエントリーポイントから呼び出される
 class MusicController{
     - spotify
+    + index()
     + get_music_list()
 }
 
 'お気に入り曲の管理時にエントリーポイントから呼び出される
 class FavoriteMusicController{
+    + index()
     + get_music_list()
     + register()
     + delete()

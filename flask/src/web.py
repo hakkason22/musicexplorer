@@ -1,15 +1,12 @@
-from flask import Flask, jsonify, request, render_template, redirect, url_for
+from flask import Flask, jsonify, request, render_template
 from flask_cors import CORS
-import sys
 from dotenv import load_dotenv
-import json
-import os
-from common.FavoriteMusicController import DB
-from common.MusicController import Sf
-from exception.MyException import unknownError
+from common.FavoriteMusicController import *
+from common.MusicController import *
+from exception.MyException import *
 
 app = Flask(__name__)
-load_dotenv()  # .envファイルの内容を環境変数として読み込みん
+load_dotenv()  # .envファイルの内容を環境変数として読み込み
 CORS(
     app,
     supports_credentials=True
@@ -48,10 +45,10 @@ def send_music_list():
     Returns:
         str: json形式の楽曲リストを返す
     """
-    sf1 = Sf()
+    music_controller = MusicController()
     artist_name = str(request.form.get("artist_name"))
     # アーティスト名から楽曲リストを持ってくる
-    re = sf1.requestToSpotify(artist_name)
+    re = music_controller.requestToSpotify(artist_name)
     return jsonify(re)
 
 
@@ -62,21 +59,21 @@ def favoriteManager(purpose: str):
         purpose (str): 可変urlパラメータ
     """
     if purpose == 'register':
-        db = DB()
+        favorite_controller = FavoriteMusicController()
         data = request.form.to_dict()
-        re = db.register(data)
+        re = favorite_controller.register(data)
         # print(re)
         return jsonify(re)
 
     elif purpose == 'list':
-        db = DB()
+        favorite_controller = FavoriteMusicController()
         user_id = request.form.get('user_id')
-        re = db.getlist(user_id)
+        re = favorite_controller.getlist(user_id)
         return jsonify(re)
     elif purpose == 'delete':
-        db = DB()
+        favorite_controller = FavoriteMusicController()
         id_ = request.form.get('id')
-        re = db.delete(id_)
+        re = favorite_controller.delete(id_)
         return jsonify(re)
     else:
         return jsonify(unknownError())

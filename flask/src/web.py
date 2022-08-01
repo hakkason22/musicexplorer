@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from common.FavoriteMusicController import *
 from common.MusicController import *
 from exception.MyException import *
+from common.libs.Database import init_db
 
 app = Flask(__name__)
 load_dotenv()  # .envファイルの内容を環境変数として読み込み
@@ -12,6 +13,7 @@ CORS(
     supports_credentials=True
 )
 app.config.from_object('flask.src.config.Config')
+init_db(app)
 
 @app.route('/')
 def Home():

@@ -11,7 +11,7 @@ CORS(
     app,
     supports_credentials=True
 )
-
+app.config.from_object('flask.src.config.Config')
 
 @app.route('/')
 def Home():

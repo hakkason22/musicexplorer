@@ -133,10 +133,10 @@ export default Vue.extend({
                             + '?utm_source=generator" width="100%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>';
 
                 })
-                .on('mouseover', function () { 
+                .on('mouseover', function (this: any) { 
                     d3.select(this).style("cursor", "pointer").style("opacity", 0.8).style("r", "10px");
                 })
-                .on('mouseout', function(){
+                .on('mouseout', function(this: any){
                     d3.select(this).style("opacity", 1).style("r", "8px");
                 });
 

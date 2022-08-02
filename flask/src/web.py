@@ -1,10 +1,12 @@
 from flask import Flask, jsonify, request, render_template
 from flask_cors import CORS
 from dotenv import load_dotenv
-from common.FavoriteMusicController import *
-from common.MusicController import *
+from common.FavoriteMusicController import FavoriteMusicController
+from common.MusicController import MusicController
 from exception.MyException import *
+
 from common.libs.Database import init_db
+import common.models.FavoriteMusic
 
 app = Flask(__name__)
 load_dotenv()  # .envファイルの内容を環境変数として読み込み
@@ -12,7 +14,7 @@ CORS(
     app,
     supports_credentials=True
 )
-app.config.from_object('flask.src.config.Config')
+app.config.from_object('config.Config')
 init_db(app)
 
 @app.route('/')

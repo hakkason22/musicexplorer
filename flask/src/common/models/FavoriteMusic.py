@@ -1,31 +1,37 @@
 from datetime import datetime
-from common.models.Base import Base
+from common.libs.Database import db
+from sqlalchemy.dialects.mysql import MEDIUMINT as Mediumint
 
-class FavoriteMusic(Base):
-    def __init__(self) -> None:
-        super().__init__()
-        self.id = self.Column(
-            self.Mediumint(unsigned=True), 
+class FavoriteMusic(db.Model):   
+    __table_args__=({"mysql_charset": "utf8mb4"})
+    __tablename__ = 'favorite_musics'
+
+    id = db.Column(
+            Mediumint(unsigned=True), 
             primary_key=True,
             autoincrement=True)
-        self.music_id = self.Column(
-            self.String(255), 
+    music_id = db.Column(
+            db.String(255), 
             nullable=False,
             unique=True)
-        self.music_name = self.Column(
-            self.String(255), 
+    music_name = db.Column(
+            db.String(255), 
             nullable=False)
-        self.valence = self.Column(
-            self.Float(8), 
+    valence = db.Column(
+            db.Float(8), 
             nullable=False)
-        self.energy = self.Column(
-            self.Float(8), 
+    energy = db.Column(
+            db.Float(8), 
             nullable=False)
-        self.user_id = self.Column(
-            self.String(255), 
+    user_id = db.Column(
+            db.String(255), 
             nullable=False)
-        self.created_at = self.Column(
-            self.DateTime, 
+    created_at = db.Column(
+            db.DateTime, 
             nullable=False, 
-            default=datetime.now, 
-            onupdate=datetime.now)
+            default=datetime.now)
+    updated_at = db.Column(
+        db.DateTime, 
+        default=datetime.now, 
+        nullable=False,
+        onupdate=datetime.now)

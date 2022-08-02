@@ -1,3 +1,5 @@
 .env
 .cache
 __pycache__/
+flask/src/migrations/
+.DS_Store

@@ -5,8 +5,8 @@ from common.FavoriteMusicController import FavoriteMusicController
 from common.MusicController import MusicController
 from exception.MyException import *
 
-from common.libs.Database import init_db
-import common.models.FavoriteMusic
+from common.libs.Database import init_db,db
+from common.models.FavoriteMusic import FavoriteMusic
 
 app = Flask(__name__)
 load_dotenv()  # .envファイルの内容を環境変数として読み込み
@@ -57,30 +57,14 @@ def send_music_list():
 
 
 @app.route('/music/favorite/<purpose>', methods=["POST"])
-def favoriteManager(purpose: str):
+def favorite_manager(purpose: str):
     """urlパラメータにごとに条件わけして処理
     Args:
         purpose (str): 可変urlパラメータ
     """
-    if purpose == 'register':
-        favorite_controller = FavoriteMusicController()
-        data = request.form.to_dict()
-        re = favorite_controller.register(data)
-        # print(re)
-        return jsonify(re)
-
-    elif purpose == 'list':
-        favorite_controller = FavoriteMusicController()
-        user_id = request.form.get('user_id')
-        re = favorite_controller.getlist(user_id)
-        return jsonify(re)
-    elif purpose == 'delete':
-        favorite_controller = FavoriteMusicController()
-        id_ = request.form.get('id')
-        re = favorite_controller.delete(id_)
-        return jsonify(re)
-    else:
-        return jsonify(unknownError())
+    favorite_controller = FavoriteMusicController(db,FavoriteMusic,purpose,request.form.to_dict())
+    result = favorite_controller.run()
+    return jsonify(result)
 
 
 if __name__ == "__main__":

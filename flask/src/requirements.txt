@@ -4,3 +4,6 @@ Flask
 flask_cors
 cryptography
 python-dotenv
+Flask-SQLAlchemy
+Flask-Migrate
+PyMySQL

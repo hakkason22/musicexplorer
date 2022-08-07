@@ -148,7 +148,13 @@ export default Vue.extend({
                 .append("text")
                 .attr("x", function(d: Music) { return xScale(d['valence']); })
                 .attr("y", function(d: Music) { return yScale(d['energy']); })
-                .text(function(d: Music){ return d['music_name'];})
+                .text(function(d: Music){
+                    let music_name: string = d['music_name'];
+                    if (music_name.length > 7) {
+                        music_name = music_name.slice(0, 6) + "..."
+                    }
+                    return music_name;
+                })
                 .attr("dx", "15px")
                 .attr("dy", "-5px")
                 .attr("fill", function(d: Music){ return d['label_color'];})

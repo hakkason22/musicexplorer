@@ -13,6 +13,7 @@
         :artist-name="target_artist_name"
       />
     </div>
+    <LoadingField v-if="$store.state.loading.loading_state" />
   </div>
 </template>
 
@@ -36,6 +37,7 @@ export default Vue.extend({
             target_artist_name: "",
             target_musics: [] as Array<Music>,
             error_msg: "",
+            is_loading: false,
         };
     },
     mounted() {
@@ -58,7 +60,8 @@ export default Vue.extend({
                     this.error_msg = "";
                     this.target_artist_name = this.target_musics[0]["artist_name"];
                 }
-            });
+                this.$store.commit("loading/loading_state", false)
+            }); 
         },
     },
 })

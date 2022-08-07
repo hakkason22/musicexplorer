@@ -66,6 +66,7 @@
         },
         methods: {
             onSubmit(){
+                this.$store.commit("loading/loading_state", true)
                 this.$emit('searchMusic', this.artist_name);
             },
             signOut(){

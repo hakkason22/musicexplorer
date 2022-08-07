@@ -7,7 +7,10 @@
       :errorMsg="error_msg"
     />
     <div class="container" v-else>
-      <Top v-if="target_artist_name == ''"/>
+      <Top 
+        v-if="target_artist_name == ''"
+        @searchMusic='searchMusics'
+      />
       <MusicField v-else 
         :music-infos="target_musics" 
         :artist-name="target_artist_name"
@@ -45,6 +48,7 @@ export default Vue.extend({
     },
     methods: {
         searchMusics(value: string) {
+            this.$store.commit("loading/loading_state", true)
             //this.error_flag = false;
             const url = `${process.env.BACKEND_ROOT}/music/list`;
             const params = new URLSearchParams();

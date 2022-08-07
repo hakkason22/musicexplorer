@@ -17,6 +17,7 @@ export default Vue.extend({
     data(){
         return {
             favoriteMusicInfos: [],
+            error_msg: ""
         }
     },
     mounted(){
@@ -29,8 +30,12 @@ export default Vue.extend({
             const params = new URLSearchParams()
             params.append('user_id', user_id)
             axios.post(url, params).then((response) => {
-                this.favoriteMusicInfos= response.data
-                console.log(response.data)
+                if(response.data.result == 0) {
+                    this.error_msg = "通信中にエラーが発生しました。"
+                }else{
+                    this.favoriteMusicInfos= response.data.data
+                    console.log(response.data.data)
+                }  
             })
         },
         showDeleteFavoriteModal(){

@@ -2,7 +2,11 @@
     <div>
         <Header />
         <DeleteFavoriteModal v-if="$store.state.show_delete_favorite_modal_flag" />
-        <div class="container"> 
+        <ErrorField
+             v-if="error_msg!==''"
+             :errorMsg="error_msg"
+         />
+        <div class="container" v-else> 
             <div class="delete_favorite_button_wrapper">
                 <span @click="showDeleteFavoriteModal">お気に入り曲を管理</span>
             </div>

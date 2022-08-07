@@ -1,3 +1,8 @@
+require('dotenv').config()
+const {
+  BACKEND_ROOT,
+} = process.env
+
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
@@ -38,7 +43,9 @@ export default {
     '@nuxt/typescript-build',
     '@nuxtjs/fontawesome',
   ],
-
+  env: {
+    BACKEND_ROOT,
+  },
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     "@nuxtjs/axios",

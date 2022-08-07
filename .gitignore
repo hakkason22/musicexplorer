@@ -1,4 +1,5 @@
 .env
+.env_prod
 .cache
 __pycache__/
 flask/src/migrations/

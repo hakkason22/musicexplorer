@@ -1,0 +1,38 @@
+version: '3.8'
+services:
+  nuxt-front:
+    image: 006800404134.dkr.ecr.ap-northeast-1.amazonaws.com/musicexplorer/front
+    build:
+      context: .
+      dockerfile: ./nuxt/Dockerfile.prod
+    ports:
+      - 3000:3000
+    platform: linux/x86_64
+    env_file:
+      - ./.env_prod
+  flask-back:
+    image: 006800404134.dkr.ecr.ap-northeast-1.amazonaws.com/musicexplorer/back
+    build:
+      context: .
+      dockerfile: ./flask/Dockerfile.prod
+    ports:
+      - 5000:5000
+    env_file:
+      - ./.env_prod
+    platform: linux/x86_64
+  db-mysql:
+    image: mysql:8.0
+    command: '--default-authentication-plugin=mysql_native_password'
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER_NAME}
+      MYSQL_PASSWORD: ${DB_USER_PASS}
+    working_dir: /workspace
+    volumes:
+      - db-storage-prod:/var/lib/mysql
+    ports:
+      - ${DB_PORT}:3306
+    platform: linux/x86_64
+volumes:
+  db-storage-prod:

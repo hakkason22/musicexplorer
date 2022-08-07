@@ -1,0 +1,8 @@
+FROM node:16.13.2-alpine
+ENV HOST 0.0.0.0
+WORKDIR /workspace
+COPY /nuxt/src /workspace
+CMD ["sh", "-c", "npm install && npm run dev"]
+RUN apk update && \
+    apk add git
+EXPOSE 3000

@@ -1,0 +1,8 @@
+FROM python:3.10.4
+ENV PYTHONUNBUFFERED=1
+EXPOSE 5000
+WORKDIR /workspace
+ADD /flask/src/requirements.txt /workspace
+RUN pip install -r requirements.txt
+COPY /flask/src /workspace
+CMD ["python", "web.py"]

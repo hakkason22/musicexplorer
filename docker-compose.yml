@@ -8,6 +8,8 @@ services:
       - ./nuxt/src:/workspace
     working_dir: /workspace
     platform: linux/x86_64
+    env_file:
+      - ./.env
   flask-back:
     build: ./flask
     ports:

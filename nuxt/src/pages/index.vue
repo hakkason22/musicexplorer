@@ -42,7 +42,7 @@ export default Vue.extend({
     searchMusics(value: string){
       //this.error_flag = false;
 
-      const url = "http://localhost:5000/music/list";
+      const url = `${process.env.BACKEND_ROOT}/music/list`;
       const params = new URLSearchParams();
       params.append('artist_name', value);
       

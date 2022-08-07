@@ -56,7 +56,7 @@ export default Vue.extend({
             const params: any = new URLSearchParams()
             params.append('user_id', user_id)
             axios.post(url, params).then((response) => {
-                this.favoriteMusicInfos= response.data
+                this.favoriteMusicInfos= response.data.data
                 console.log(response.data)
             })
 
@@ -148,7 +148,7 @@ export default Vue.extend({
         background:#fff;
         z-index:2;
         height: 600px;
-        /* border-radius:20px; */
+        border-radius:20px;
         overflow-y: scroll;
     }
     .close_button{

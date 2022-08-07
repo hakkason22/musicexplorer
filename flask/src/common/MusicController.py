@@ -65,7 +65,7 @@ class MusicController:
             str: アーティストID
         """
         results = self.spotify.search(
-            q="artist:" + artist_name, type="artist", market="JP", limit=1)    
+            q=artist_name, type="artist", market="JP", limit=1)    
         # resultはsptifyにアーティストについて教えてで検索かけて出た検索結果
         
         items = results["artists"]["items"]

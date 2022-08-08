@@ -4,3 +4,4 @@
 __pycache__/
 flask/src/migrations/
 .DS_Store
+aws_command.sample

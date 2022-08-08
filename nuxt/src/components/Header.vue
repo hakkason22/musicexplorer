@@ -76,6 +76,9 @@
                 })
             },
             toTop(){
+                if(this.$route.path == '/'){
+                    location.reload();
+                }
                 this.$router.push('/');
             },
             toManageFavorite(){

@@ -37,7 +37,6 @@ export default Vue.extend({
         height: fit-content;
         margin:0 auto;
         z-index:2;
-        overflow-y: scroll;
         opacity: 0.8;
     }
 </style>

@@ -75,7 +75,7 @@ class FavoriteMusicController:
         """
         # レコードのid　からお気に入り曲を削除
         try:
-            for id in self.__request_data['favorite_music_ids']:
+            for id in self.__request_data['favorite_music_ids'].split(','):
                 delete_favorite_music = self.__FavoriteMusic.query.get(int(id))
                 self.__db.session.delete(delete_favorite_music)
             self.__db.session.commit()

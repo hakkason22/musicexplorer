@@ -3,7 +3,6 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 from common.FavoriteMusicController import FavoriteMusicController
 from common.MusicController import MusicController
-from exception.MyException import *
 
 from common.libs.Database import init_db,db
 from common.models.FavoriteMusic import FavoriteMusic

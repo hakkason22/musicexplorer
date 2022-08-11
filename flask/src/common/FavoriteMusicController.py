@@ -1,7 +1,4 @@
 # coding:utf-8
-import mysql.connector
-import sys
-import os
 from common.libs.FavoriteMusicData import FavoriteMusicData
 
 class FavoriteMusicController:
@@ -42,7 +39,7 @@ class FavoriteMusicController:
             self.__db.session.add(register_favorite_music)
             self.__db.session.commit()
         except Exception as e:
-            return {"error_message":e, "result":0}
+            return {"error_message": str(e), "result":0}
         
         return {"error_message":"", "result":1}
 
@@ -61,7 +58,7 @@ class FavoriteMusicController:
             for m in find_favorite_musics:
                 find_favorite_musics_re.append(vars(FavoriteMusicData(m)))
         except Exception as e:
-            return {"error_message":e,"result":0}
+            return {"error_message": str(e),"result":0}
 
         re = {"error_message":"","result":1}
         re['data'] = find_favorite_musics_re
@@ -80,6 +77,6 @@ class FavoriteMusicController:
                 self.__db.session.delete(delete_favorite_music)
             self.__db.session.commit()
         except Exception as e:
-            return {"error_message":e,"result":0}
+            return {"error_message": str(e),"result":0}
 
         return {"error_message":"","result":1}

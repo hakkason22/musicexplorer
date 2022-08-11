@@ -4,7 +4,6 @@
 
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
-from exception.MyException import noTracks, incorrectParam, noArtists
 import itertools
 from difflib import SequenceMatcher
 import os
@@ -47,13 +46,13 @@ class MusicController:
         elif "artist_name" in locals():
             artist_id = self.__getIdByArtist(artist_name)
             if artist_id == None:
-                return noArtists()
+                return { "message": "No artists hit" }
             data = self.__getAllTracksByArtistId(artist_id)
             if data == None:
-                return noTracks()
+                return { "message": "No Tracks hit" }
             return data
         else:
-            return incorrectParam()
+            return { "message": "Incorrect parameter" }
 
     def __getIdByArtist(self, artist_name: str) -> str:
         """アーティスト名からアーティストIDを入手する

@@ -1,6 +1,6 @@
 <template>
     <div class="modal_wrapper">
-        <div class="favorite_music_wrapper">
+        <div class="modal_message_wrapper">
             <div class="close_button">
                 <font-awesome-icon icon="fa-solid fa-xmark" class="close_icon" @click="closeModal" />
             </div>
@@ -19,7 +19,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import DeleteFavoriteModal from './DeleteFavoriteModal.vue';
-import AddFavoriteModal from './AddFavariteModal.vue';
+import AddFavoriteModal from './AddFavoriteModal.vue';
 
 export default Vue.extend({
     props:["modalType"],
@@ -47,15 +47,14 @@ export default Vue.extend({
         height:120%;
         background-color:rgba(0,0,0,0.75);
     }
-    .favorite_music_wrapper{
+    .modal_message_wrapper{
         width:50%;
         margin:5em auto 0;
         border:2px solid #aaa;
         background:#fff;
         z-index:2;
-        height: 600px;
+        height: 60%;
         border-radius:20px;
-        overflow-y: scroll;
     }
     .close_button{
         display: flex;
@@ -68,11 +67,14 @@ export default Vue.extend({
         padding:5px 10px;
         color:white;
         position: absolute;
-        right: 25%;
+        right: 23%;
+        top: 5%;
         cursor: pointer;
     }
     .modal_field{
         padding: 30px;
+        position: relative;
+        height: 80%;
     }
     .modal_field h2{
         text-align: center;
@@ -80,22 +82,31 @@ export default Vue.extend({
     .favorite_infos{
         display: flex;
         flex-wrap: wrap;
-        margin-top:5em;
+        margin-top:3em;
+        padding: 0 5em;
+        overflow-y: scroll;
+        height: 43vh;
+        align-content: baseline;
     }
     .favorite_info{
         border-radius: 30px;
         border: 2px solid black;
         padding: 5px 10px;
         margin: 10px;
+        height: 1.5em;
     }
     .submit_field{
         text-align: center;
         margin-top: 50px;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        left: 0;
     }
     .submit_field span{
         padding: 10px 20px;
         border-radius: 20px;
-        background: blue;
+        background: black;
         color: white;
         cursor: pointer;
     }

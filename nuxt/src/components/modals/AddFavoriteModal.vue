@@ -2,12 +2,15 @@
     <div>
         <h2>グラフにお気に入り曲を追加</h2>
         <div class="favorite_infos">
+            <div v-if="favoriteMusicInfos.length === 0">
+                <p>お気に入り曲が登録されていません。</p>
+            </div>
             <div class="favorite_info" v-for="favoriteMusicInfo in favoriteMusicInfos" :key="favoriteMusicInfo.music_id">
                 <input type="radio" :id="favoriteMusicInfo.music_id" :value="favoriteMusicInfo.music_id" v-model="selectedMusicId">
                 {{ favoriteMusicInfo.music_name }}
             </div>
         </div>
-        <div class="submit_field">
+        <div class="submit_field" v-if="favoriteMusicInfos.length > 0">
             <span @click="addChart">追加</span>
         </div>
     </div>

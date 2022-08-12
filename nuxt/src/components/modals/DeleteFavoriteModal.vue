@@ -1,13 +1,17 @@
 <template>
     <div>
+        <h2>お気に入り曲を削除</h2>
+        <div v-if="favoriteMusicInfos.length === 0">
+            <p>お気に入り曲が登録されていません。</p>
+        </div>
         <div class="favorite_infos">
             <div class="favorite_info" v-for="favoriteMusicInfo in favoriteMusicInfos" :key="favoriteMusicInfo.music_id">
                 <input type="checkbox" :id="favoriteMusicInfo.music_id" :value="favoriteMusicInfo.favorite_music_id" v-model="selectedMusicIds">
                 {{ favoriteMusicInfo.music_name }}
             </div>
         </div>
-        <div class="submit_field">
-            <span @click="deleteFavorite">選択した曲をお気に入りから削除</span>
+        <div class="submit_field" v-if="favoriteMusicInfos.length > 0">
+            <span @click="deleteFavorite">削除</span>
         </div>
     </div>
 </template>

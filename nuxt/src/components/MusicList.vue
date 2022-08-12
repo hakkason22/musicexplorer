@@ -57,7 +57,7 @@ export default Vue.extend({
 
         },
         showFavoriteModal(){
-            this.$store.commit('showFavoriteModal');
+            this.$store.commit('modal/showModal', 'add-favorite');
         }
     }
 
@@ -95,7 +95,5 @@ export default Vue.extend({
     .music_list_wrapper{
         width: 1300px;
         margin: 0 auto;        
-       
-       
     }
 </style>

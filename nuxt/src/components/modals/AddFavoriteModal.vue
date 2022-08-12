@@ -1,21 +1,17 @@
 <template>
-    <div class="modal_wrapper">
-        <div class="favorite_music_wrapper">
-            <div class="close_button">
-                <font-awesome-icon icon="fa-solid fa-xmark" class="close_icon" @click="closeFavoriteModal" />
+    <div>
+        <h2>グラフにお気に入り曲を追加</h2>
+        <div class="favorite_infos">
+            <div v-if="favoriteMusicInfos.length === 0">
+                <p>お気に入り曲が登録されていません。</p>
             </div>
-            <div class="favorite_list_field">
-                <h2>グラフにお気に入り曲を追加</h2>
-                <div class="favorite_infos">
-                    <div class="favorite_info" v-for="favoriteMusicInfo in favoriteMusicInfos" :key="favoriteMusicInfo.music_id">
-                        <input type="radio" :id="favoriteMusicInfo.music_id" :value="favoriteMusicInfo.music_id" v-model="selectedMusicId">
-                        {{ favoriteMusicInfo.music_name }}
-                    </div>
-                </div>
-                <div class="submit_field">
-                    <span @click="addChart">追加</span>
-                </div>
+            <div class="favorite_info" v-for="favoriteMusicInfo in favoriteMusicInfos" :key="favoriteMusicInfo.music_id">
+                <input type="radio" :id="favoriteMusicInfo.music_id" :value="favoriteMusicInfo.music_id" v-model="selectedMusicId">
+                {{ favoriteMusicInfo.music_name }}
             </div>
+        </div>
+        <div class="submit_field" v-if="favoriteMusicInfos.length > 0">
+            <span @click="addChart">追加</span>
         </div>
     </div>
 </template>
@@ -47,9 +43,6 @@ export default Vue.extend({
         this.getFavoriteMusicInfo()
     },
     methods:{
-        closeFavoriteModal(){
-            this.$store.commit('closeFavoriteModal');
-        },
         getFavoriteMusicInfo(){
             const user_id: string = this.$store.getters.user.uid
             const url: string = `${process.env.BACKEND_ROOT}/music/favorite/list`
@@ -126,74 +119,8 @@ export default Vue.extend({
         addChart(){
             const targetMusicInfo = this.favoriteMusicInfos.find(element => element.music_id === this.selectedMusicId)
             this.$nuxt.$emit('addFavoriteToChart', targetMusicInfo)
-            this.closeFavoriteModal()
+            this.$emit('closeModal');
         }
     }
 })
 </script>
-<style scoped>
-    .modal_wrapper{
-        z-index:1;
-        position:fixed;
-        top:0;
-        left:0;
-        width:100%;
-        height:120%;
-        background-color:rgba(0,0,0,0.75);
-    }
-    .favorite_music_wrapper{
-        width:50%;
-        margin:5em auto 0;
-        border:2px solid #aaa;
-        background:#fff;
-        z-index:2;
-        height: 600px;
-        border-radius:20px;
-        overflow-y: scroll;
-    }
-    .close_button{
-        display: flex;
-
-    }
-    .close_icon{
-        font-size:24px;
-        border-radius: 50%;
-        background: grey;
-        padding:5px 10px;
-        color:white;
-        position: absolute;
-        right: 25%;
-        cursor: pointer;
-    }
-    .favorite_list_field{
-        padding: 30px;
-    }
-    .favorite_list_field h2{
-        text-align: center;
-    }
-    .favorite_infos{
-        display: flex;
-        flex-wrap: wrap;
-        margin-top:5em;
-    }
-    .favorite_info{
-        border-radius: 30px;
-        border: 2px solid black;
-        padding: 5px 10px;
-        margin: 10px;
-    }
-    .submit_field{
-        text-align: center;
-        margin-top: 50px;
-    }
-    .submit_field span{
-        padding: 10px 20px;
-        border-radius: 20px;
-        background: blue;
-        color: white;
-        cursor: pointer;
-    }
-    .submit_field span:hover{
-        opacity: 0.8;
-    }
-</style>

@@ -4,7 +4,7 @@
         <img src="../images/logo.png" alt="" @click="toTop">
     </div>
     <div class="menu_wrapper">
-        <p @click="toManageFavorite" v-if="$route.path !== '/manage_favorite'">お気に入り</p>
+        <p @click="toManageFavorite" v-if="$route.path !== '/manage_favorite' && $store.getters.isAuthenticated">お気に入り</p>
         <p>{{ user_name }}</p>
         <p @click="signOut">ログアウト</p>
         <input v-if="$route.path === '/'" type="text" v-model="artist_name" placeholder="artist name" @keypress.enter="onSubmit">
@@ -62,7 +62,11 @@
             };
         },
         mounted(){
-            this.user_name = this.$store.getters.user.displayName
+            if(this.$store.getters.isAuthenticated) {
+                this.user_name = this.$store.getters.user.displayName
+            }else{
+                this.user_name = "ゲスト"
+            }
         },
         methods: {
             onSubmit(){

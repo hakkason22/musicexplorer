@@ -1,6 +1,9 @@
 <template>
   <div>
-    <FavariteModal v-if="$store.state.show_favorite_modal_flag" />
+    <Modal
+      v-if="$store.state.modal.target_modal_type!==''"
+      :modal-type="$store.state.modal.target_modal_type"
+    />
     <Header @searchMusic='searchMusics' />
     <ErrorField
       v-if="error_msg!==''"
@@ -23,6 +26,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import axios from 'axios';
+import Modal from '../components/modals/Modal.vue';
 
 export interface Music {
   artist_name: string;
@@ -44,11 +48,11 @@ export default Vue.extend({
         };
     },
     mounted() {
-        this.$store.commit("closeFavoriteModal");
+        this.$store.commit("modal/closeModal");
     },
     methods: {
         searchMusics(value: string) {
-            this.$store.commit("loading/loading_state", true)
+            this.$store.commit("loading/loading_state", true);
             //this.error_flag = false;
             const url = `${process.env.BACKEND_ROOT}/music/list`;
             const params = new URLSearchParams();
@@ -64,10 +68,11 @@ export default Vue.extend({
                     this.error_msg = "";
                     this.target_artist_name = this.target_musics[0]["artist_name"];
                 }
-                this.$store.commit("loading/loading_state", false)
-            }); 
+                this.$store.commit("loading/loading_state", false);
+            });
         },
     },
+    components: { Modal }
 })
 </script>
 <style>

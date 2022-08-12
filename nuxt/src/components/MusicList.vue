@@ -57,7 +57,7 @@ export default Vue.extend({
 
         },
         showFavoriteModal(){
-            this.$store.commit('showFavoriteModal');
+            this.$store.commit('modal/showModal', 'add-favorite');
         }
     }
 

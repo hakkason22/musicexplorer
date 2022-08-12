@@ -6,7 +6,8 @@
     <div class="menu_wrapper">
         <p @click="toManageFavorite" v-if="$route.path !== '/manage_favorite' && $store.getters.isAuthenticated">お気に入り</p>
         <p>{{ user_name }}</p>
-        <p @click="signOut">ログアウト</p>
+        <p v-if="$store.getters.isAuthenticated" @click="signOut">ログアウト</p>
+        <p v-else @click="toLoginPage">ログイン</p>
         <input v-if="$route.path === '/'" type="text" v-model="artist_name" placeholder="artist name" @keypress.enter="onSubmit">
     </div>
     
@@ -76,7 +77,8 @@
                 this.$store
                 .dispatch('signOut')
                 .then(() => {
-                    this.$router.push('/login')
+                    this.$router.push('/')
+                    location.reload()
                 })
             },
             toTop(){
@@ -87,6 +89,9 @@
             },
             toManageFavorite(){
                 this.$router.push('manage_favorite')
+            },
+            toLoginPage() {
+                this.$router.push('/login')
             }
         }
     })

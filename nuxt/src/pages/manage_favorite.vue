@@ -59,11 +59,18 @@ export default Vue.extend({
         background: black;
         min-height: 120vh;
         opacity: 0.9;
+        padding: 30px 0;
+    }
+    .delete_favorite_button_wrapper { 
+        margin: 0 auto;
+        width: 1300px;
     }
     .delete_favorite_button_wrapper span{
         cursor: pointer;
         background:white;
         padding: 10px;
-        margin: 10px;
+        margin: 10px 0;
+        border-radius: 50px;
+        font-weight: bold;
     }
 </style>

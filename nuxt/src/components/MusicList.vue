@@ -95,7 +95,5 @@ export default Vue.extend({
     .music_list_wrapper{
         width: 1300px;
         margin: 0 auto;        
-       
-       
     }
 </style>

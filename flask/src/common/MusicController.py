@@ -196,7 +196,30 @@ class MusicController:
                 "music_id": id
             }
             track_list.append(record)
+
+        #パラメータの被りを解消
+        track_list = self.__delete_same_param_music(track_list)
+
         return track_list
+
+    def __delete_same_param_music(self,track_list:list):
+        """valenceとenergyの組み合わせが同じ曲を片方だけ残すようにする
+
+        Args:
+            track_list (list): 返却する楽曲のリスト
+
+        Returns:
+            list: ラップした楽曲のリスト、ディープコピー
+        """
+        filtered_list = []
+        param_dict = {}
+        for t in track_list:
+            if (t['valence'],t['energy']) in param_dict:
+                continue
+            param_dict[(t['valence'],t['energy'])] = t['music_id']
+            filtered_list.append(t)
+        return filtered_list
+
 
 
 

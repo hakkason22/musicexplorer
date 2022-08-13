@@ -77,7 +77,7 @@ export default Vue.extend({
 <style>
   .container{
     background: black;
-    min-height: 120vh;
+    min-height: 92vh;
     opacity: 0.9;
   }
 </style>

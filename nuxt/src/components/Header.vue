@@ -24,6 +24,8 @@
         justify-content: space-between;
         background: black !important;
         padding:0 40px;
+        align-items: center;
+        height: 8vh;
     }
     .header_logo_wrapper{
         color: white;

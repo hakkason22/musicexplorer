@@ -12,8 +12,7 @@ class FavoriteMusic(db.Model):
                 autoincrement=True)
         music_id = db.Column(
                 db.String(255), 
-                nullable=False,
-                unique=True)
+                nullable=False)
         music_name = db.Column(
                 db.String(255), 
                 nullable=False)

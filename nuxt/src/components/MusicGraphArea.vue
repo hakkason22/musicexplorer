@@ -28,16 +28,6 @@
                 :font-size="chart_font_size"
                 class="graph_element"
         >{{ $store.state.player.target_display_music_name }}</text>
-        <text
-            x="100"
-            y="100"
-            fill="white"
-        >testzero</text>
-        <text
-            :x="1 * (chart_width-100) + 100"
-            :y="1 * (chart_height-100) + 100"
-            fill="white"
-        >testmax</text>
     </svg>
     <div class="detail_wrapper" v-if="$store.state.player.target_music_id !== ''">
         <div class="player_area">

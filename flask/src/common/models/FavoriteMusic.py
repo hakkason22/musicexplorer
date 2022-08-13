@@ -3,7 +3,9 @@ from common.libs.Database import db
 from sqlalchemy.dialects.mysql import MEDIUMINT as Mediumint
 
 class FavoriteMusic(db.Model): 
-        __table_args__=({"mysql_charset": "utf8mb4"})
+        __table_args__=(
+                db.UniqueConstraint('music_id', 'user_id', name='unique_user_music'),
+        )
         __tablename__ = 'favorite_musics'
 
         id = db.Column(

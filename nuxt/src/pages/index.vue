@@ -30,12 +30,11 @@ import Modal from '../components/modals/Modal.vue';
 
 export interface Music {
   artist_name: string;
-  color: string;
-  label_color: string;
   music_id: string;
   music_name: string;
   energy: number;
   valence: number;
+  display_music_name: string;
 }
 
 export default Vue.extend({

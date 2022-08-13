@@ -1,18 +1,9 @@
 <template>
     <div class="music_list_wrapper">
         <div class="list_message" >{{ artistName }}
-            <span @click="toggle_list">
-                <font-awesome-icon v-if="show_flag<0" icon="fa-solid fa-circle-chevron-down" />
-                <font-awesome-icon v-else-if="show_flag>0" icon="fa-solid fa-circle-chevron-up" />
-            </span>
             <span>
-                <font-awesome-icon @click="showFavoriteModal" icon="fa-solid fa-circle-plus" />
+                <font-awesome-icon @click="showFavoriteModal" icon="fa-solid fa-circle-chevron-down" />
             </span>
-        </div>
-        <div class="music_list" v-if="show_flag>0">
-            <div class="music_info" v-for="musicInfo in musicInfos" :key="musicInfo.music_id" @click="displayPlayer(musicInfo.music_id)"  @click.right.prevent="registerFavorite(musicInfo)">
-                {{ musicInfo.music_name }}
-            </div>
         </div>
     </div>
     
@@ -101,7 +92,7 @@ export default Vue.extend({
         background: blue;
     }
     .music_list_wrapper{
-        width: 1300px;
+        width: 90vw;
         margin: 0 auto;        
     }
 </style>

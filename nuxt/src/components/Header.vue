@@ -59,7 +59,7 @@
         data(){
             return {
                 artist_name: "",
-                user_name: null
+                user_name: null as string | null,
             };
         },
         mounted(){

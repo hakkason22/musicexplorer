@@ -1,171 +1,124 @@
 <template>
   <div class="chart_wrapper">
-    <div id="chart" class="chart_area">
-        <img class="chart_img" src="../images/russel.png" alt="">
+    <svg 
+        :viewbox="chart_min_width + ' ' + chart_min_height + ' ' + chart_width + ' ' + chart_height" 
+        :width=chart_width+100
+        :height=chart_height+100
+    >
+        <text v-for="musicInfo in musicInfos" :key="musicInfo.music_id"
+                :x="musicInfo['valence'] * (chart_width-100) + 100"
+                :y="(1 - musicInfo['energy']) * (chart_height-100) + 100"
+                :fill="normal_color"
+                @click="displayDetail(musicInfo)"
+                :font-size="chart_font_size"
+                class="graph_element"
+        >{{ musicInfo.display_music_name }}</text>
+        <text v-for="favoriteMusicInfo in favoriteMusicInfos" :key="favoriteMusicInfo.music_id"
+                :x="favoriteMusicInfo['valence'] * (chart_width-100) + 100"
+                :y="(1 - favoriteMusicInfo['energy']) * (chart_height-100) + 100"
+                :fill="favorite_color"
+                @click="displayDetail(favoriteMusicInfo)"
+                :font-size="chart_font_size"
+                class="graph_element"
+        >{{ favoriteMusicInfo.music_name }}</text>
+        <text v-if="$store.state.player.target_music_id!==''"
+                :x="$store.state.player.target_valence * (chart_width-100) + 100"
+                :y="(1 - $store.state.player.target_energy) * (chart_height-100) + 100"
+                :fill="playing_color"
+                :font-size="chart_font_size"
+                class="graph_element"
+        >{{ $store.state.player.target_display_music_name }}</text>
+    </svg>
+    <div class="detail_wrapper" v-if="$store.state.player.target_music_id !== ''">
+        <div class="player_area">
+            <iframe
+                style="border-radius:12px"
+                :src="'https://open.spotify.com/embed/track/'+$store.state.player.target_music_id+'?utm_source=generator'"
+                width="100%"
+                height="80"
+                frameBorder="0"
+                allowfullscreen=""
+                allow="autoplay; clipboard-write; fullscreen; picture-in-picture">
+            </iframe>
+        </div>
+        <div class="favorite_area">
+            <span @click="registerFavorite">＋</span>
+        </div>
     </div>
-    <div class="player_wrapper" id="player_wrapper"></div>
   </div>
 </template>
 
 <script lang="ts">
-import * as d3 from 'd3'
+import axios from 'axios'
 import Vue from 'vue'
 import { Music } from '../pages/index.vue'
-
-interface Range {
-    max: number;
-    min: number;
-}
 
 export default Vue.extend({
     props: ["musicInfos"],
     data(){
         return {
-            svg: null as any,
-            valence_range: {} as Range,
-            energy_range: {} as Range,
-            plot_data: [] as Array<Music>,
-            chart_width: 1350,
+            chart_width: 1300,
             chart_height: 1020,
-            chart_margin:  { "top": 40, "bottom": 80, "right": 90, "left": 130 },
+            chart_min_width: 0,
+            chart_min_height: 0,
+            chart_font_size: 14,
             favorite_music_id_list: [] as Array<string>,
+            normal_color: "white",
+            favorite_color: "#00fa9a",
+            playing_color: "red",
+            favoriteMusicInfos: [] as Array<Music>,
+            playingMusicInfo: {} as Music,
         };
     },
     mounted() {
+        this.preProcess();
         this.$nuxt.$on('addFavoriteToChart', this.addUpdateData);
-        this.preprocess();
-        this.drawChart();
     },
     watch:{
         musicInfos: function(){
-            let chart_svg: any = document.getElementById('chart_svg');
-            let chart_svg_parent = chart_svg.parentNode;
-            this.plot_data = [];
-            this.svg = null;
-            chart_svg_parent!.removeChild(chart_svg);
-            this.preprocess();
-            this.drawChart();
+            this.preProcess();
         }
-    },
+    },  
     methods: {
-        preprocess(){
-            this.svg = d3.select('#chart')
-                        .append('svg')
-                        .attr('width', this.chart_width)
-                        .attr('height', this.chart_height)
-                        .attr('id', "chart_svg")
+        preProcess(){
+            this.chart_width = window.innerWidth - 200;
+            this.chart_height = window.innerHeight - 200;
 
-            let valence_list: number[] = [];
-            let energy_list: number[] = [];
-            this.musicInfos.forEach((element: Music, idx: number) => {
-                // お気に入り曲はグラフパラメータを変える
-                if(this.favorite_music_id_list.includes(element['music_id'])){
-                    element['color'] = "blue";
-                    element['label_color'] = "red";
+            this.musicInfos.forEach((musicInfo: Music) => {
+                if(musicInfo.music_name.length < 10){
+                    musicInfo.display_music_name = musicInfo.music_name;
                 }else{
-                    element['color'] = "#00fa9a";
-                    element['label_color'] = "black";
+                    musicInfo.display_music_name = musicInfo.music_name.slice(0, 9) + "...";
                 }
-                this.plot_data.push(element);
-                valence_list.push(element['valence']);
-                energy_list.push(element['energy']);
-            });
-            this.valence_range['max'] = Math.max(...valence_list);
-            this.valence_range['min'] = Math.min(...valence_list);
-            this.energy_range['max'] = Math.max(...energy_list);
-            this.energy_range['min'] = Math.min(...energy_list);
-        },
-        drawChart(){
-            const xScale = d3.scaleLinear()
-            .domain([this.valence_range['min'], this.valence_range['max']])
-            .range([this.chart_margin.left, this.chart_width - this.chart_margin.right]);
-
-            const yScale = d3.scaleLinear()
-            .domain([this.energy_range['min'], this.energy_range['max']])
-            .range([this.chart_height - this.chart_margin.bottom, this.chart_margin.top]);
-
-            // 軸の表示
-            // var axisx = d3.axisBottom(xScale).ticks(5);
-            // var axisy = d3.axisLeft(yScale).ticks(5);
-
-            // this.svg.append("g")
-            //     .attr("transform", "translate(" + 0 + "," + (this.chart_height - this.chart_margin.bottom) + ")")
-            //     .call(axisx)
-            //     .append("text")
-            //     .attr("fill", "black")
-            //     .attr("x", (this.chart_width - this.chart_margin.left - this.chart_margin.right) / 2 + this.chart_margin.left)
-            //     .attr("y", 50)
-            //     .attr("text-anchor", "middle")
-            //     .attr("font-size", "12pt")
-            //     .attr("font-weight", "middle")
-            //     .text("sad ↔️ happy");
-
-            // this.svg.append("g")
-            //     .attr("transform", "translate(" + this.chart_margin.left + "," + 0 + ")")
-            //     .call(axisy)
-            //     .append("text")
-            //     .attr("fill", "black")
-            //     .attr("x", -(this.chart_height - this.chart_margin.top - this.chart_margin.bottom) / 2 - this.chart_margin.top)
-            //     .attr("text-anchor", "middle")
-            //     .attr("y", -50)
-            //     .attr("transform", "rotate(-90)")
-            //     .attr("font-weight", "middle")
-            //     .attr("font-size", "12pt")
-            //     .text("relax ↔️ excite");
-
-            this.svg.append("g")
-                .selectAll("circle")
-                .data(this.plot_data)
-                .enter()
-                .append("circle")
-                .attr("cx", function(d: Music) { return xScale(d['valence']); })
-                .attr("cy", function(d: Music) { return yScale(d['energy']); })
-                .attr("id", function(d: Music) { return d['music_id']; })
-                .attr("fill", function(d: Music) { return d['color'] })
-                .attr("r", "8px")
-                .on('click', function (data: any) { 
-                    // クリックイベント
-                    let music_id = data.target.id;
-                    let el: any = document.getElementById("player_wrapper");
-                    el.innerHTML =
-                            '<iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/'
-                            + music_id
-                            + '?utm_source=generator" width="100%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>';
-
-                })
-                .on('mouseover', function (this: any) { 
-                    d3.select(this).style("cursor", "pointer").style("opacity", 0.8).style("r", "10px");
-                })
-                .on('mouseout', function(this: any){
-                    d3.select(this).style("opacity", 1).style("r", "8px");
-                });
-
-            // ラベルの表示
-            this.svg.append("g")
-                .selectAll("circle")
-                .data(this.plot_data)
-                .enter()
-                .append("text")
-                .attr("x", function(d: Music) { return xScale(d['valence']); })
-                .attr("y", function(d: Music) { return yScale(d['energy']); })
-                .text(function(d: Music){
-                    let music_name: string = d['music_name'];
-                    if (music_name.length > 7) {
-                        music_name = music_name.slice(0, 6) + "..."
-                    }
-                    return music_name;
-                })
-                .attr("dx", "15px")
-                .attr("dy", "-5px")
-                .attr("fill", function(d: Music){ return d['label_color'];})
-                .attr("font-size", "12px")
-                .attr('text-anchor', "middle")
-                .style('pointer-events', 'none');
+            })
         },
         addUpdateData(targetMusicInfo: Music){
-            this.favorite_music_id_list.push(targetMusicInfo.music_id)
-            this.musicInfos.push(targetMusicInfo)
-        }
+            this.favoriteMusicInfos.push(targetMusicInfo);
+        },
+        displayDetail(music: Music){
+            //this.playingMusicInfo = music;
+            this.$store.commit('player/setMusic', music);
+            console.log(this.$store.state.player.target_music_name)
+        },
+        registerFavorite(){
+            if(!this.$store.getters.isAuthenticated) {
+                this.$store.commit("modal/showModal", "login-induction");
+            }else{
+                if(confirm('「' + this.$store.state.player.target_music_name + '」 をお気に入り曲に登録しますか？')){
+                    const url = `${process.env.BACKEND_ROOT}/music/favorite/register`;
+                    const params = new URLSearchParams();
+                    params.append('music_name', this.$store.state.player.target_music_name);
+                    params.append('valence', String(this.$store.state.player.target_valence));
+                    params.append('energy', String(this.$store.state.player.target_energy));
+                    params.append('music_id', this.$store.state.player.target_music_id);
+                    params.append('user_id', this.$store.getters.user.uid);
+                    
+                    axios.post(url, params).then((response) => {
+                        console.log(response.data);                    
+                    });
+                }
+            }
+        },
     },
 })
 </script>
@@ -173,37 +126,39 @@ export default Vue.extend({
 
     .chart_wrapper{
         padding-bottom:60px;
-    }
-
-    .chart_area{     
-        padding: 20px;
-        margin: 0 auto;
         text-align: center;
-        position:relative;
     }
-
-    .chart_img{
-        z-index: -1;
-        position:absolute;
-        left:0;
-        right:0;
-        margin: 0 auto;
-        width:1300px;
-        height:1020px;
-    }
-
-    .player_wrapper{
-        width: 40%;
+    .detail_wrapper{
         position: fixed;
-        bottom: 0;
+        bottom: 3%;
         left: 0;
         right: 0;
         margin: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
-
-    .favo_area{
-        font-size: 30px;
-        color: red;
+    .player_area{
+        width: 40%;
+    }
+    .favorite_area{
+        padding-left: 10px;
+    }
+    .favorite_area span{
+        color: black;
+        font-weight: bold;
+        background: white;
+        border-radius: 50%;
+        padding: 10px;
+        font-size: 18px;
+        cursor: pointer;
+    }
+    svg{
+        background: radial-gradient(midnightblue, rgba(0,0,0,0.8));
+    }
+    .graph_element{
+        cursor: pointer;
+        border: 1px solid white;
     }
 </style>
 

@@ -1,5 +1,6 @@
 # coding:utf-8
 from common.libs.FavoriteMusicData import FavoriteMusicData
+from common.libs.FavoriteMusicService import FavoriteMusicService
 
 class FavoriteMusicController:
     """お気に入り楽曲を管理するコントローラ
@@ -31,6 +32,8 @@ class FavoriteMusicController:
         Returns:
             dict: { error_message:(str), result:(0or1) }
         """
+        if(FavoriteMusicService.CheckExist(self.__request_data['user_id'],self.__request_data['music_id'])):
+            return {"error_message": "The music is already registered.", "result":0}
         try:
             # 登録するお気に入り曲オブジェクトを作成
             register_favorite_music = self.__FavoriteMusic(**self.__request_data)
@@ -39,6 +42,7 @@ class FavoriteMusicController:
             self.__db.session.add(register_favorite_music)
             self.__db.session.commit()
         except Exception as e:
+            print(str(e))
             return {"error_message": str(e), "result":0}
         
         return {"error_message":"", "result":1}
@@ -58,6 +62,7 @@ class FavoriteMusicController:
             for m in find_favorite_musics:
                 find_favorite_musics_re.append(vars(FavoriteMusicData(m)))
         except Exception as e:
+            print(str(e))
             return {"error_message": str(e),"result":0}
 
         re = {"error_message":"","result":1}
@@ -77,6 +82,7 @@ class FavoriteMusicController:
                 self.__db.session.delete(delete_favorite_music)
             self.__db.session.commit()
         except Exception as e:
+            print(str(e))
             return {"error_message": str(e),"result":0}
 
         return {"error_message":"","result":1}

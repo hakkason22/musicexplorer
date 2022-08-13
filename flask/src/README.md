@@ -14,7 +14,11 @@
   - [参考文献](https://self-development.info/mysql-connector-python%E3%81%A7mysql%E3%83%BBmariadb%E3%81%AB%E6%8E%A5%E7%B6%9A%E3%81%99%E3%82%8B/)
 
 # migration の仕方
-- srcディレクトリの中で以下のコマンドを実行
+- ~~srcディレクトリの中で以下のコマンドを実行~~
+- flaskコンテナの中で実行
+~~~
+$ docker container exec [flaskコンテナ名] [コンテナ内で実行するコマンド]
+~~~
 - 初期化
 ~~~python
 $ flask db init

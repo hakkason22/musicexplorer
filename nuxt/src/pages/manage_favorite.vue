@@ -13,7 +13,9 @@
             <div class="delete_favorite_button_wrapper">
                 <span @click="showDeleteFavoriteModal">お気に入り曲を管理</span>
             </div>
-            <MusicGraphArea :music-infos="favoriteMusicInfos" />
+            <MusicGraphArea v-if="favoriteMusicInfos.length > 0"
+                :music-infos="favoriteMusicInfos" 
+            />
         </div>
     </div>
 </template>
@@ -28,7 +30,7 @@ export default Vue.extend({
             error_msg: ""
         };
     },
-    mounted() {
+    created() {
         this.getFavoriteMusicInfo();
     },
     methods: {
@@ -63,7 +65,8 @@ export default Vue.extend({
     }
     .delete_favorite_button_wrapper { 
         margin: 0 auto;
-        width: 1300px;
+        width: 90vw;
+        padding: 10px;
     }
     .delete_favorite_button_wrapper span{
         cursor: pointer;

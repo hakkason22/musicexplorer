@@ -4,6 +4,7 @@ const state = {
     target_display_music_name: "" as string,
     target_valence: -1 as number,
     target_energy: -1 as number,
+    target_is_favorite: false as boolean,
 };
 
 const mutations = {
@@ -13,7 +14,11 @@ const mutations = {
         state.target_display_music_name = music.display_music_name;
         state.target_valence = music.valence;
         state.target_energy = music.energy;
+        state.target_is_favorite = music.is_favorite;
     },
+    setPlayerFavorite(state: any, is_favorite: boolean) {
+        state.target_is_favorite = is_favorite
+    }
 };
 
 const player = {

@@ -1,19 +1,26 @@
 <template>
     <div class="login_induction_wrapper">
-        <h2>お気に入り機能を使用するためにはログインが必要です</h2>
+        <h2>ログイン</h2>
         <div class="link_field">
-            <span @click="toLoginPage">ログインページへ</span>
+            <span @click="googleLogin">Googleアカウントを使用する</span>
         </div>
     </div>
 </template>
 <script lang="ts">
 import Vue from 'vue'
-
 export default Vue.extend({
-    methods:{
-        toLoginPage() {
-            this.$router.push('/login');
-        }
+    methods: {
+        googleLogin: function(err: any) {
+            this.$store
+                .dispatch('signInWithGoogle')
+                .then(() => {
+                    location.reload()
+                })
+                .catch((err: any) => {
+                    alert('現在Googleでのログインは使用できません。後ほどお試しください。')
+                    location.reload()
+                })
+        },
     }
 })
 </script>

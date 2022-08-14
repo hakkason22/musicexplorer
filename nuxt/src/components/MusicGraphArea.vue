@@ -8,26 +8,12 @@
         <text v-for="musicInfo in musicInfos" :key="musicInfo.music_id"
                 :x="musicInfo['valence'] * (chart_width-100) + 100"
                 :y="(1 - musicInfo['energy']) * (chart_height-100) + 100"
-                :fill="normal_color"
+                :fill="musicInfo['graph_color']"
                 @click="displayDetail(musicInfo)"
                 :font-size="chart_font_size"
                 class="graph_element"
         >{{ musicInfo.display_music_name }}</text>
-        <text v-for="favoriteMusicInfo in favoriteMusicInfos" :key="favoriteMusicInfo.music_id"
-                :x="favoriteMusicInfo['valence'] * (chart_width-100) + 100"
-                :y="(1 - favoriteMusicInfo['energy']) * (chart_height-100) + 100"
-                :fill="favorite_color"
-                @click="displayDetail(favoriteMusicInfo)"
-                :font-size="chart_font_size"
-                class="graph_element"
-        >{{ favoriteMusicInfo.music_name }}</text>
-        <text v-if="$store.state.player.target_music_id!==''"
-                :x="$store.state.player.target_valence * (chart_width-100) + 100"
-                :y="(1 - $store.state.player.target_energy) * (chart_height-100) + 100"
-                :fill="playing_color"
-                :font-size="chart_font_size"
-                class="graph_element"
-        >{{ $store.state.player.target_display_music_name }}</text>
+
     </svg>
     <div class="detail_wrapper" v-if="$store.state.player.target_music_id !== ''">
         <div class="player_area">
@@ -42,7 +28,19 @@
             </iframe>
         </div>
         <div class="favorite_area">
-            <span @click="registerFavorite">＋</span>
+            <span 
+                v-if="$store.state.player.target_is_favorite"
+                class="favorite_icon faved"
+            >
+                    ★
+            </span>
+            <span 
+                v-else
+                @click="registerFavorite"
+                class="favorite_icon not_faved"
+            >
+                    ☆
+            </span>
         </div>
     </div>
   </div>
@@ -54,7 +52,7 @@ import Vue from 'vue'
 import { Music } from '../pages/index.vue'
 
 export default Vue.extend({
-    props: ["musicInfos"],
+    props: ["musicInfos", "artistName"],
     data(){
         return {
             chart_width: 1300,
@@ -62,12 +60,9 @@ export default Vue.extend({
             chart_min_width: 0,
             chart_min_height: 0,
             chart_font_size: 14,
-            favorite_music_id_list: [] as Array<string>,
             normal_color: "white",
             favorite_color: "#00fa9a",
             playing_color: "red",
-            favoriteMusicInfos: [] as Array<Music>,
-            playingMusicInfo: {} as Music,
         };
     },
     mounted() {
@@ -75,12 +70,12 @@ export default Vue.extend({
         this.$nuxt.$on('addFavoriteToChart', this.addUpdateData);
     },
     watch:{
-        musicInfos: function(){
+        artistName: function(){
             this.preProcess();
         }
     },  
     methods: {
-        preProcess(){
+        setup(){
             this.chart_width = window.innerWidth - 200;
             this.chart_height = window.innerHeight - 200;
 
@@ -90,34 +85,77 @@ export default Vue.extend({
                 }else{
                     musicInfo.display_music_name = musicInfo.music_name.slice(0, 9) + "...";
                 }
+                // グラフの色を設定
+                if(musicInfo.music_id == this.$store.state.player.target_music_id){
+                    musicInfo.graph_color = this.playing_color;
+                }else if(musicInfo.is_favorite){
+                    musicInfo.graph_color = this.favorite_color;
+                }else{
+                    musicInfo.graph_color = this.normal_color;
+                }
+                
+                if('is_favorite' in musicInfo === false) {
+                    musicInfo.is_favorite = false
+                }
             })
+            this.musicInfos.splice();
         },
+        preProcess(){
+            this.setup();
+            this.setFavoriteMusicInfo();
+        }, 
         addUpdateData(targetMusicInfo: Music){
-            this.favoriteMusicInfos.push(targetMusicInfo);
+            targetMusicInfo.is_favorite = true;
+            this.musicInfos.push(targetMusicInfo);
+            this.setup()
         },
         displayDetail(music: Music){
-            //this.playingMusicInfo = music;
+            if('is_favorite' in music === false){
+                music.is_favorite = false
+            }
             this.$store.commit('player/setMusic', music);
+            this.setup();
             console.log(this.$store.state.player.target_music_name)
         },
         registerFavorite(){
             if(!this.$store.getters.isAuthenticated) {
                 this.$store.commit("modal/showModal", "login-induction");
             }else{
-                if(confirm('「' + this.$store.state.player.target_music_name + '」 をお気に入り曲に登録しますか？')){
-                    const url = `${process.env.BACKEND_ROOT}/music/favorite/register`;
-                    const params = new URLSearchParams();
-                    params.append('music_name', this.$store.state.player.target_music_name);
-                    params.append('valence', String(this.$store.state.player.target_valence));
-                    params.append('energy', String(this.$store.state.player.target_energy));
-                    params.append('music_id', this.$store.state.player.target_music_id);
-                    params.append('user_id', this.$store.getters.user.uid);
-                    
-                    axios.post(url, params).then((response) => {
-                        console.log(response.data);                    
-                    });
-                }
+                const url = `${process.env.BACKEND_ROOT}/music/favorite/register`;
+                const params = new URLSearchParams();
+                params.append('music_name', this.$store.state.player.target_music_name);
+                params.append('valence', String(this.$store.state.player.target_valence));
+                params.append('energy', String(this.$store.state.player.target_energy));
+                params.append('music_id', this.$store.state.player.target_music_id);
+                params.append('user_id', this.$store.getters.user.uid);
+                
+                axios.post(url, params).then((response) => {
+                    console.log(response.data);
+                    this.$store.commit("player/setPlayerFavorite", true)
+                    console.log(this.$store.state.player.is_favorite)
+                    this.setFavoriteMusicInfo()                    
+                });
             }
+        },
+        async setFavoriteMusicInfo(){
+            const user_id: string = this.$store.getters.user.uid
+            const url: string = `${process.env.BACKEND_ROOT}/music/favorite/list`
+            const params: any = new URLSearchParams()
+            params.append('user_id', user_id)
+            await axios.post(url, params).then((response) => {
+                const favoriteMusicInfos: Array<Music> = response.data.data
+                console.log(response.data)
+                let favorite_music_ids: Array<string> = [];
+                favoriteMusicInfos.forEach((favoriteMusicInfo: Music) => {
+                    favorite_music_ids.push(favoriteMusicInfo.music_id)
+                });
+                this.musicInfos.forEach((musicInfo: Music) => {
+                    if(favorite_music_ids.includes(musicInfo.music_id)){
+                        musicInfo.is_favorite = true;
+                    }
+                });
+                this.setup();
+            })
         },
     },
 })
@@ -144,13 +182,19 @@ export default Vue.extend({
     .favorite_area{
         padding-left: 10px;
     }
-    .favorite_area span{
-        color: black;
+    .favorite_icon{
         font-weight: bold;
-        background: white;
         border-radius: 50%;
         padding: 10px;
         font-size: 18px;
+    }
+    .faved{
+        color: black;
+        background: lightgray;
+        cursor: default;
+    }
+    .not_faved{
+        background: white;
         cursor: pointer;
     }
     svg{

@@ -35,6 +35,8 @@ export interface Music {
   energy: number;
   valence: number;
   display_music_name: string;
+  graph_color: string;
+  is_favorite: boolean;
 }
 
 export default Vue.extend({
@@ -52,20 +54,21 @@ export default Vue.extend({
     methods: {
         searchMusics(value: string) {
             this.$store.commit("loading/loading_state", true);
-            //this.error_flag = false;
             const url = `${process.env.BACKEND_ROOT}/music/list`;
             const params = new URLSearchParams();
             params.append("artist_name", value);
             axios.post(url, params).then((response) => {
                 console.log(response.data);
-                this.target_musics = response.data;
-                if ("message" in this.target_musics) {
+                if ("message" in response.data) {
                     console.log("error");
                     this.error_msg = "アーティストが見つかりませんでした。";
                 }
                 else {
                     this.error_msg = "";
-                    this.target_artist_name = this.target_musics[0]["artist_name"];
+                    if(this.target_artist_name !== response.data[0]["artist_name"]) {
+                      this.target_musics = response.data;
+                      this.target_artist_name = this.target_musics[0]["artist_name"];
+                    }
                 }
                 this.$store.commit("loading/loading_state", false);
             });

@@ -1,7 +1,7 @@
 <template>
     <div class="music_field_wrapper">
         <MusicList  :music-infos="musicInfos" :artist-name="artistName" />
-        <MusicGraphArea :music-infos="musicInfos" />
+        <MusicGraphArea :music-infos="musicInfos" :artist-name="artistName" />
     </div>
 </template>
 <script lang="ts">

@@ -60,9 +60,9 @@ export default Vue.extend({
             params.append('favorite_music_ids', this.selectedMusicIds)
             axios.post(url, params).then((response) => {
                 console.log(response.data)
+                // reload
+                location.reload()
             })
-            // reload
-            location.reload()
         }
     }
 })

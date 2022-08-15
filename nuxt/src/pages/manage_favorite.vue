@@ -34,20 +34,20 @@ export default Vue.extend({
         this.getFavoriteMusicInfo();
     },
     methods: {
-        getFavoriteMusicInfo() {
+        async getFavoriteMusicInfo() {
             const user_id = this.$store.getters.user.uid;
             const url = `${process.env.BACKEND_ROOT}/music/favorite/list`;
             const params = new URLSearchParams();
             params.append("user_id", user_id);
-            axios.post(url, params).then((response) => {
-                if (response.data.result == 0) {
-                    this.error_msg = "通信中にエラーが発生しました。";
-                }
-                else {
-                    this.favoriteMusicInfos = response.data.data;
-                    console.log(response.data.data);
-                }
-            });
+            const response = await axios.post(url, params)
+            
+            if (response.data.result == 0) {
+                this.error_msg = "通信中にエラーが発生しました。";
+            }
+            else {
+                this.favoriteMusicInfos = response.data.data;
+                console.log(response.data.data);
+            }
         },
         showDeleteFavoriteModal() {
             this.$store.commit("modal/showModal", "delete-favorite");

@@ -44,25 +44,23 @@ export default Vue.extend({
 
     },
     methods:{
-        getFavoriteMusicInfo(){
+        async getFavoriteMusicInfo(){
             const user_id: string = this.$store.getters.user.uid
             const url: string = `${process.env.BACKEND_ROOT}/music/favorite/list`
             const params: any = new URLSearchParams()
             params.append('user_id', user_id)
-            axios.post(url, params).then((response) => {
-                this.favoriteMusicInfos= response.data.data
-                console.log(response.data)
-            })
+            const response = await axios.post(url, params)
+            this.favoriteMusicInfos= response.data.data
+            console.log(response.data)
         },
-        deleteFavorite(){
+        async deleteFavorite(){
             const url: string = `${process.env.BACKEND_ROOT}/music/favorite/delete`
             const params: any = new URLSearchParams()
             params.append('favorite_music_ids', this.selectedMusicIds)
-            axios.post(url, params).then((response) => {
-                console.log(response.data)
-                // reload
-                location.reload()
-            })
+            const response = await axios.post(url, params)
+            console.log(response.data)
+            // reload
+            location.reload()
         }
     }
 })

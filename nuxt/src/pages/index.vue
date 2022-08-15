@@ -52,26 +52,26 @@ export default Vue.extend({
         this.$store.commit("modal/closeModal");
     },
     methods: {
-        searchMusics(value: string) {
+        async searchMusics(value: string) {
             this.$store.commit("loading/loading_state", true);
             const url = `${process.env.BACKEND_ROOT}/music/list`;
             const params = new URLSearchParams();
             params.append("artist_name", value);
-            axios.post(url, params).then((response) => {
-                console.log(response.data);
-                if ("message" in response.data) {
-                    console.log("error");
-                    this.error_msg = "アーティストが見つかりませんでした。";
+            const response = await axios.post(url, params)
+            console.log(response.data);
+            
+            if ("message" in response.data) {
+                console.log("error");
+                this.error_msg = "アーティストが見つかりませんでした。";
+            }
+            else {
+                this.error_msg = "";
+                if(this.target_artist_name !== response.data[0]["artist_name"]) {
+                  this.target_musics = response.data;
+                  this.target_artist_name = this.target_musics[0]["artist_name"];
                 }
-                else {
-                    this.error_msg = "";
-                    if(this.target_artist_name !== response.data[0]["artist_name"]) {
-                      this.target_musics = response.data;
-                      this.target_artist_name = this.target_musics[0]["artist_name"];
-                    }
-                }
-                this.$store.commit("loading/loading_state", false);
-            });
+            }
+            this.$store.commit("loading/loading_state", false);
         },
     },
     components: { Modal }

@@ -117,7 +117,7 @@ export default Vue.extend({
             this.setup();
             console.log(this.$store.state.player.target_music_name)
         },
-        registerFavorite(){
+        async registerFavorite(){
             if(!this.$store.getters.isAuthenticated) {
                 this.$store.commit("modal/showModal", "login-induction");
             }else{
@@ -129,12 +129,11 @@ export default Vue.extend({
                 params.append('music_id', this.$store.state.player.target_music_id);
                 params.append('user_id', this.$store.getters.user.uid);
                 
-                axios.post(url, params).then((response) => {
-                    console.log(response.data);
-                    this.$store.commit("player/setPlayerFavorite", true)
-                    console.log(this.$store.state.player.is_favorite)
-                    this.setFavoriteMusicInfo()                    
-                });
+                const response = await axios.post(url, params);
+                console.log(response.data);
+                this.$store.commit("player/setPlayerFavorite", true)
+                console.log(this.$store.state.player.is_favorite)
+                this.setFavoriteMusicInfo()
             }
         },
         async setFavoriteMusicInfo(){
@@ -142,20 +141,20 @@ export default Vue.extend({
             const url: string = `${process.env.BACKEND_ROOT}/music/favorite/list`
             const params: any = new URLSearchParams()
             params.append('user_id', user_id)
-            await axios.post(url, params).then((response) => {
-                const favoriteMusicInfos: Array<Music> = response.data.data
-                console.log(response.data)
-                let favorite_music_ids: Array<string> = [];
-                favoriteMusicInfos.forEach((favoriteMusicInfo: Music) => {
-                    favorite_music_ids.push(favoriteMusicInfo.music_id)
-                });
-                this.musicInfos.forEach((musicInfo: Music) => {
-                    if(favorite_music_ids.includes(musicInfo.music_id)){
-                        musicInfo.is_favorite = true;
-                    }
-                });
-                this.setup();
-            })
+            const response = await axios.post(url, params)
+            console.log(response.data)
+            const favoriteMusicInfos: Array<Music> = response.data.data
+            
+            let favorite_music_ids: Array<string> = [];
+            favoriteMusicInfos.forEach((favoriteMusicInfo: Music) => {
+                favorite_music_ids.push(favoriteMusicInfo.music_id)
+            });
+            this.musicInfos.forEach((musicInfo: Music) => {
+                if(favorite_music_ids.includes(musicInfo.music_id)){
+                    musicInfo.is_favorite = true;
+                }
+            });
+            this.setup();
         },
     },
 })

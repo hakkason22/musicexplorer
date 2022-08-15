@@ -24,25 +24,6 @@ export default Vue.extend({
         toggle_list(){
             this.show_flag *= -1;
         },
-        registerFavorite(musicInfo: Music){
-            if(!this.$store.getters.isAuthenticated) {
-                this.$store.commit("modal/showModal", "login-induction");
-            }else{
-                if(confirm('「' + musicInfo.music_name + '」 をお気に入り曲に登録しますか？')){
-                    const url = `${process.env.BACKEND_ROOT}/music/favorite/register`;
-                    const params = new URLSearchParams();
-                    params.append('music_name', musicInfo.music_name);
-                    params.append('valence', String(musicInfo.valence));
-                    params.append('energy', String(musicInfo.energy));
-                    params.append('music_id', musicInfo.music_id);
-                    params.append('user_id', this.$store.getters.user.uid);
-                    
-                    axios.post(url, params).then((response) => {
-                        console.log(response.data);                    
-                    });
-                }
-            }
-        },
         displayPlayer(music_id: string){
             let el: any = document.getElementById("player_wrapper");
             el.innerHTML =

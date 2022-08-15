@@ -43,15 +43,14 @@ export default Vue.extend({
         this.getFavoriteMusicInfo()
     },
     methods:{
-        getFavoriteMusicInfo(){
+        async getFavoriteMusicInfo(){
             const user_id: string = this.$store.getters.user.uid
             const url: string = `${process.env.BACKEND_ROOT}/music/favorite/list`
             const params: any = new URLSearchParams()
             params.append('user_id', user_id)
-            axios.post(url, params).then((response) => {
-                this.favoriteMusicInfos= response.data.data
-                console.log(response.data)
-            })
+            const response = await axios.post(url, params)
+            this.favoriteMusicInfos= response.data.data
+            console.log(response.data)
         },
         addChart(){
             const targetMusicInfo = this.favoriteMusicInfos.find(element => element.music_id === this.selectedMusicId)

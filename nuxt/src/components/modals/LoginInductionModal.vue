@@ -1,8 +1,15 @@
 <template>
     <div class="login_induction_wrapper">
         <h2>ログイン</h2>
-        <div class="link_field">
-            <span @click="googleLogin">Googleアカウントを使用する</span>
+        <div class="link_field" @click="googleLogin">
+            <div class="google_icon_area">
+                <img src="../../images/google-icon.svg" alt="">
+            </div>
+            <div class="link_area">
+                <span>
+                    Googleアカウントでログイン
+                </span>
+            </div>
         </div>
     </div>
 </template>
@@ -30,14 +37,28 @@ export default Vue.extend({
     }
     .link_field{
         text-align: center;
-        margin-top: 30%;
+        background: lightgray;
+        border-radius: 10px;
+        color: black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: fit-content;
+        padding: 10px 20px;
+        margin: 0 auto;
+        cursor: pointer;
+    }
+    .link_field:hover {
+        opacity: 0.9;
     }
     .link_field span {
-        font-size: 24px;
-        cursor: pointer;
-        padding: 10px 15px;
-        background: black;
-        border-radius: 50px;
-        color: white;
+        font-size: 26px;
+        padding: 5px 30px;
+    }
+    .google_icon_area {
+        width: fit-content;
+    }
+    .google_icon_area img{
+        width: 50px;
     }
 </style>

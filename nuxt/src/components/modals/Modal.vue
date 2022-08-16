@@ -1,6 +1,6 @@
 <template>
     <div class="modal_wrapper">
-        <div class="modal_message_wrapper">
+        <div :class="modalClass">
             <div class="close_button">
                 <font-awesome-icon icon="fa-solid fa-xmark" class="close_icon" @click="closeModal" />
             </div>
@@ -27,6 +27,11 @@ import LoginInductionModal from './LoginInductionModal.vue';
 
 export default Vue.extend({
     props:["modalType"],
+    data() {
+        return {
+            modalClass: "modal_message_wrapper_transparence"
+        }
+    },
     methods: {
         closeModal(){
             this.$store.commit('modal/closeModal');
@@ -36,6 +41,12 @@ export default Vue.extend({
         DeleteFavoriteModal,
         AddFavoriteModal,
         LoginInductionModal
+    },
+    mounted() {
+        console.log(this.modalType)
+        if(this.modalType === 'add-favorite' || this.modalType === 'delete-favorite') {
+            this.modalClass = "modal_message_wrapper"
+        }
     }
 })
 </script>
@@ -58,6 +69,14 @@ export default Vue.extend({
         height: 60%;
         border-radius:20px;
     }
+    .modal_message_wrapper_transparence{
+        width:50%;
+        margin:5em auto 0;
+        z-index:2;
+        height: 60%;
+        border-radius:20px;
+    }
+
     .close_button{
         display: flex;
 

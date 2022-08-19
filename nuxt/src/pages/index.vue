@@ -79,7 +79,7 @@ export default Vue.extend({
 </script>
 <style>
   .container{
-    background: black;
+    background: radial-gradient(midnightblue, #010007);
     min-height: 92vh;
     opacity: 0.9;
   }

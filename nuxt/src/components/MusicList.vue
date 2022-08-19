@@ -1,8 +1,21 @@
 <template>
     <div class="music_list_wrapper">
-        <div class="list_message" >{{ artistName }}
+        <div class="artist_name_wrapper" >
+            {{ artistName }}
+        </div>
+        <div class="list_message">
             <span>
-                <font-awesome-icon @click="showFavoriteModal" icon="fa-solid fa-circle-chevron-down" />
+                <font-awesome-icon 
+                    @click="showFavoriteModal" 
+                    icon="fa-solid fa-circle-chevron-down" 
+                />
+            </span>
+            <span>
+                <font-awesome-icon
+                     @click="resize"
+                    icon="fa-solid fa-expand" 
+                    class="resize_icon"
+                />
             </span>
         </div>
     </div>
@@ -39,12 +52,15 @@ export default Vue.extend({
                 this.$store.commit('modal/showModal', 'add-favorite');
             }
         },
+        resize() {
+            this.$emit('resize')
+        }
     }
 
 })
 </script>
 <style scoped>
-    .list_message{
+    .list_message, .artist_name_wrapper{
         font-size:22px;
         color:black;
         padding:0 10px;
@@ -73,7 +89,10 @@ export default Vue.extend({
         background: blue;
     }
     .music_list_wrapper{
-        width: 90vw;
-        margin: 0 auto;        
+        position: fixed;
+        top: 85px;
+        left: 50px;
+        display: flex;
     }
+
 </style>

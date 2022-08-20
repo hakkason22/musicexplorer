@@ -79,6 +79,11 @@ class MusicController:
         self.artist_name = artist["name"]
         return artist_id
 
+    
+    
+
+
+
     def __getAllTracksByArtistId(self, artist_id: str) -> dict:
         """アーティストIDからすべてのトラックの情報を入手
 
@@ -94,14 +99,23 @@ class MusicController:
         album_records = results['items']
         if not album_records:
             return None
-        # while results['next']:
-        #     results = self.spotify.next(results)
-        #     album_records.extend(results['items'])
 
         a_trackId_list = []
         temp_tracknames_list = [] 
         t_track_info = {}
         tracks_total = 0
+        t_name_and_Id_set = {} 
+
+        #アーティストIDからアーティストの人気曲を取得する
+        top_trackslist = self.spotify.artist_top_tracks(artist_id,country = "JP")
+        for track in top_trackslist["tracks"]:
+            print(track["id"])
+            a_trackId_list.append(track['id'])
+            temp_tracknames_list.append([track['name'],track['id']]) 
+            t_track_info[track['id']] = {"name": track['name']}
+            t_name_and_Id_set[track['name']] = track['id'] 
+            
+
         # アルバムIDからトラック情報を取得
         for a_data in album_records:
             album_id = a_data['id']
@@ -110,13 +124,15 @@ class MusicController:
             if tracks_total > 100:
                 break
             # トラック情報から名前とIDを取得
-            t_name_and_Id_set = {} 
+
             for t_data in tracks_data['items']:
                 a_trackId_list.append(t_data["id"])
                 temp_tracknames_list.append([t_data["name"], t_data["id"]]) 
                 t_track_info[t_data["id"]] = {"name": t_data["name"]}
                 t_name_and_Id_set[t_data["name"]] = t_data["id"] 
-        
+            
+            
+
 
         #曲の重複対策
         compare_namelist = []
@@ -138,16 +154,13 @@ class MusicController:
         #print(temp_tracknames_list)
         
 
-        
-
-
         #曲名の類似度の高い曲の組み合わせを抽出
         for i in itertools.combinations(temp_tracknames_list , 2):
             #i、itertools.combinations(temp_tracknames_list, 2)自体はタプル
 
             s = SequenceMatcher(None, a = i[0][0],b = i[1][0])
             
-            if s.ratio() >= 0.65: 
+            if s.ratio() >= 1.00: 
 
 
 

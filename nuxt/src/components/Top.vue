@@ -17,6 +17,9 @@
             </nuxt-link>
             <!-- /.recommend_artist_item -->
         </div>
+        <div v-else style="height: 50%">
+            <!-- loading recommend music -->
+        </div>
         <!-- /.recommend_artist_wrapper -->
 
     </div>

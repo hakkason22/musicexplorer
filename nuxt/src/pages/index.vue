@@ -80,7 +80,7 @@ export default Vue.extend({
 <style>
   .container{
     background: radial-gradient(midnightblue, #010007);
-    min-height: 92vh;
+    height: 92vh;
     opacity: 0.9;
   }
 </style>

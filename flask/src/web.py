@@ -3,6 +3,7 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 from common.FavoriteMusicController import FavoriteMusicController
 from common.MusicController import MusicController
+from common.RecommendArtistController import RecommendArtistController
 
 from common.libs.Database import init_db,db
 from common.models.FavoriteMusic import FavoriteMusic
@@ -63,6 +64,14 @@ def favorite_manager(purpose: str):
     """
     favorite_controller = FavoriteMusicController(db,FavoriteMusic,purpose,request.form.to_dict())
     result = favorite_controller.run()
+    return jsonify(result)
+
+@app.route('/artist/recommend',methods=["POST"])
+def recommend_artists():
+    """おすすめアーティストを返す
+    """
+    recommend_controller = RecommendArtistController()
+    result = recommend_controller.get_recommend_artists(request.form.get('user_id'))
     return jsonify(result)
 
 

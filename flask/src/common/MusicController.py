@@ -173,9 +173,6 @@ class MusicController:
                 exclude_namelist.append(compare_namelist[i][0])
             else:
                 exclude_namelist.append(compare_namelist[i][1])
-        for i in exclude_namelist:
-            if i == "長く短い祭":
-                print(i)
 
         #消去する曲名から消去する曲のIDを取得し、曲のIDリストから消去
         #曲のIDリストを更新
@@ -198,6 +195,10 @@ class MusicController:
         # トラックIDから各種パラメータを取得
         track_features = self.spotify.audio_features(list(a_track_set))
         for track_feature in track_features:
+
+            if not track_feature:
+                continue
+
             # 戻り値の整形
             id = track_feature["id"]
             record = {

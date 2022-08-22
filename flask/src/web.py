@@ -66,12 +66,12 @@ def favorite_manager(purpose: str):
     result = favorite_controller.run()
     return jsonify(result)
 
-@app.route('/artist/recommend',methods=["GET"])
+@app.route('/artist/recommend',methods=["POST"])
 def recommend_artists():
     """おすすめアーティストを返す
     """
     recommend_controller = RecommendArtistController()
-    result = recommend_controller.get_recommend_artists(request.args.get('user_id'))
+    result = recommend_controller.get_recommend_artists(request.form.get('user_id'))
     return jsonify(result)
 
 

@@ -108,7 +108,6 @@ class MusicController:
         #アーティストIDからアーティストの人気曲を取得する
         top_trackslist = self.spotify.artist_top_tracks(artist_id,country = "JP")
         for track in top_trackslist["tracks"]:
-            print(track["id"])
             a_trackId_list.append(track['id'])
             temp_tracknames_list.append([track['name'],track['id']]) 
             t_track_info[track['id']] = {"name": track['name']}

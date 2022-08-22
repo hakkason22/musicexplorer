@@ -88,7 +88,7 @@ export default Vue.extend({
         }
     },
     computed: {
-        viewbox: function() {
+        viewbox: function() : string{
             return [this.chart_min_width, this.chart_min_height, this.chart_width, this.chart_height].join(' ')
         }
     }, 

@@ -108,7 +108,6 @@ class MusicController:
         #アーティストIDからアーティストの人気曲を取得する
         top_trackslist = self.spotify.artist_top_tracks(artist_id,country = "JP")
         for track in top_trackslist["tracks"]:
-            print(track["id"])
             a_trackId_list.append(track['id'])
             temp_tracknames_list.append([track['name'],track['id']]) 
             t_track_info[track['id']] = {"name": track['name']}
@@ -174,9 +173,6 @@ class MusicController:
                 exclude_namelist.append(compare_namelist[i][0])
             else:
                 exclude_namelist.append(compare_namelist[i][1])
-        for i in exclude_namelist:
-            if i == "長く短い祭":
-                print(i)
 
         #消去する曲名から消去する曲のIDを取得し、曲のIDリストから消去
         #曲のIDリストを更新
@@ -200,6 +196,9 @@ class MusicController:
         track_features = self.spotify.audio_features(list(a_track_set))
         for track_feature in track_features:
             # 戻り値の整形
+            if not track_feature:
+                continue
+
             id = track_feature["id"]
             record = {
                 "artist_name": self.artist_name,

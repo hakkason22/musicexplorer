@@ -69,9 +69,9 @@ export default Vue.extend({
             chart_min_width: 0,
             chart_min_height: 0,
             chart_font_size: 14,
-            normal_color: "white",
+            normal_color: "#FFFEF9",
             favorite_color: "#00fa9a",
-            playing_color: "red",
+            playing_color: "#e4007f",
             prev_point: {x: 0, y: 0},
             is_panning: false,
             chart_cursor: "chart_grab"
@@ -88,7 +88,7 @@ export default Vue.extend({
         }
     },
     computed: {
-        viewbox: function() {
+        viewbox: function() : string{
             return [this.chart_min_width, this.chart_min_height, this.chart_width, this.chart_height].join(' ')
         }
     }, 
@@ -290,7 +290,7 @@ export default Vue.extend({
         border: 1px solid white;
     }
     .graph_element:hover {
-        opacity: 0.8;
+        opacity: 0.9;
     }
 </style>
 

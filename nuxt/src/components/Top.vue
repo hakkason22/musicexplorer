@@ -7,7 +7,7 @@
             </p>
         </div>
 
-        <div class="recommend_artist_wrapper">
+        <div class="recommend_artist_wrapper" v-if="recommend_artists.length > 0">
             <nuxt-link to="/" class="recommend_artist_item" v-for="artist in recommend_artists" :key="artist.id" @click.native="onSubmitFromRecommend(artist.name)">
                 <div class="artist_content_wrap">
                     <img :src="artist.image.url" alt="">
@@ -16,6 +16,9 @@
                 <!-- /.artist_content_wrap -->
             </nuxt-link>
             <!-- /.recommend_artist_item -->
+        </div>
+        <div v-else style="height: 50%">
+            <!-- loading recommend music -->
         </div>
         <!-- /.recommend_artist_wrapper -->
 
@@ -49,13 +52,11 @@ export default Vue.extend({
                 throw new Error(error)
             })
 
-            return res.data
+            this.recommend_artists = res.data
         }
     },
     mounted: function(){
-        this.getRecommendArtists().then((res)=>{
-            this.recommend_artists = res
-        })
+        this.getRecommendArtists()
     }
 })
 </script>

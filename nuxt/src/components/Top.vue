@@ -44,7 +44,8 @@ export default Vue.extend({
     mounted: async function(){
             const postParams = new URLSearchParams()
             const url = `${process.env.BACKEND_ROOT}/artist/recommend`
-            postParams.set('user_id', this.$store.getters.user.uid)
+            const user_id = this.$store.getters.isAuthenticated ? this.$store.getters.user.uid:""
+            postParams.set('user_id', user_id)
             await axios.post(url,postParams)
             .then((res)=>{
                 console.log(res.data)

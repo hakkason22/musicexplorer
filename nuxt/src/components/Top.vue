@@ -39,22 +39,24 @@ export default Vue.extend({
             console.log(artist_name)
             this.artist_name = artist_name
             this.$emit('searchMusic', this.artist_name);
-        }
-    },
-    mounted: async function(){
+        },
+        async getRecommendArtists(){
             const postParams = new URLSearchParams()
             const url = `${process.env.BACKEND_ROOT}/artist/recommend`
             const user_id = this.$store.getters.isAuthenticated ? this.$store.getters.user.uid:""
             postParams.set('user_id', user_id)
-            await axios.post(url,postParams)
-            .then((res)=>{
-                console.log(res.data)
-                this.recommend_artists = res.data
+            const res = await axios.post(url,postParams).catch((error)=>{
+                throw new Error(error)
             })
-            .catch((error)=>{
-                console.log("[ERROR]"+error)
-            })
+
+            return res.data
         }
+    },
+    mounted: function(){
+        this.getRecommendArtists().then((res)=>{
+            this.recommend_artists = res
+        })
+    }
 })
 </script>
 <style scoped>

@@ -12,11 +12,12 @@
     <div class="container" v-else>
       <Top 
         v-if="target_artist_name == ''"
-        @searchMusic='searchMusics'
+        @searchMusics='searchMusics'
       />
       <MusicField v-else 
         :music-infos="target_musics" 
         :artist-name="target_artist_name"
+        @searchMusics='searchMusics'
       />
     </div>
     <LoadingField v-if="$store.state.loading.loading_state" />

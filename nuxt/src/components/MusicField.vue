@@ -4,6 +4,7 @@
             :music-infos="musicInfos" 
             :artist-name="artistName" 
             @resize="resizeChart"
+            @searchMusics="searchMusics"
         />
         <MusicGraphArea 
             :music-infos="musicInfos" 
@@ -21,7 +22,11 @@ import Vue from "vue";
             resizeChart(){
                 const graph = this.$refs.graph as any
                 graph.preProcess()
-            }
+            },
+            searchMusics(artist_name:string){
+                console.log(artist_name)
+                this.$emit('searchMusics', artist_name);
+            },
         }
     })
 </script>

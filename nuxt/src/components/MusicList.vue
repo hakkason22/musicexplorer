@@ -2,7 +2,7 @@
     <div class="menu_wrapper">
         <div class="sub_menu_wrapper">
             <div class = "nav">
-                <a href="#" class="showRecommend" @click="toggleRecommendArtist">Recommendation</a>
+                <a href="#" class="Recommend" :class="recommendClass" @click="toggleRecommendArtist">おすすめアーティスト</a>
             </div>
             <div class="recommend_artist_wrapper" v-if="recommend_artists.length > 0 && show">
                 <nuxt-link to="/" class="recommend_artist_item" v-for="artist in recommend_artists" :key="artist.id" @click.native="searchMusics(artist.name)">
@@ -51,10 +51,7 @@ export default Vue.extend({
             show_flag: 1,
             recommend_artists:[],
             show:false,
-            transition: {
-                name:"slide",
-                mode:"out-in"
-            }
+            recommendClass:"closeRecommend"
         };
     },
     methods: {
@@ -82,6 +79,8 @@ export default Vue.extend({
         searchMusics(artist_name:string){
             console.log(artist_name)
             this.$emit('searchMusics', artist_name);
+            this.show = false
+            this.recommendClass = "closeRecommend"
         },
         async getRecommendArtists(){
             const postParams = new URLSearchParams()
@@ -97,8 +96,10 @@ export default Vue.extend({
         toggleRecommendArtist(){
             if(this.show){
                 this.show = false
+                this.recommendClass = "closeRecommend"
             }else{
                 this.show = true
+                this.recommendClass = "openRecommend"
             }
         }
     },
@@ -114,7 +115,8 @@ export default Vue.extend({
         color:black;
         padding:0 10px;
         display: inline-block;
-        border-radius: 30px;
+        /* border-radius: 30px; */
+        border-radius: 5px;
         background: #fff;
     }
     .list_message span{
@@ -147,7 +149,7 @@ export default Vue.extend({
     }
 
     .main_menu_wrapper{
-        padding-left: 15px;
+        /* padding-left: 15px; */
         margin-top: 10px;
     }
 
@@ -157,16 +159,26 @@ export default Vue.extend({
     }
 
     .nav{
-        background-color: rgb(80, 40, 85);
+        /* background-color: rgb(40, 40, 40); */
         width: 100%;
+        text-align: left;
     }
 
-    .showRecommend{
-        color: white;
+    .Recommend{
+        color: rgba(255, 255, 255, 0.6);
         text-decoration: none;
+        padding: 0.2rem;
+        border: solid;
+        border-color: rgb(124, 124, 124);
+        border-radius: 5px;
+        background-color: rgb(40, 40, 40);
     }
 
-    .showRecommend:after {
+    .Recommend:hover{
+        color: rgb(181, 181, 181);
+    }
+
+    .closeRecommend:after {
         content: '';
         display: inline-block;
         width: 6px;
@@ -179,13 +191,21 @@ export default Vue.extend({
         transform: rotate(45deg);
     }
 
-
-
-    .showRecommend:hover{
-        color: rgb(181, 181, 181);
+    .openRecommend:after {
+        content: '';
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        margin: 0 0 0 15px;
+        border-right: 1px solid #fff;
+        border-bottom: 1px solid #fff;
+        -webkit-transform: rotate(225deg);
+        -ms-transform: rotate(225deg);
+        transform: rotate(225deg);
     }
     
     .recommend_artist_wrapper{
+        position: fixed;
         display: flex;
         width: 100%;
         max-height: 90%;
@@ -193,8 +213,6 @@ export default Vue.extend({
         padding-bottom: 12px;
         margin-bottom: 12px;
         overflow-x: scroll;
-        background-color: rgb(80, 40, 85);
-        transition: opacity 200ms;
     }
     .recommend_artist_item{
         width: 12%;

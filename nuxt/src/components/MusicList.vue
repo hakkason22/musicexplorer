@@ -1,42 +1,45 @@
 <template>
     <div class="menu_wrapper">
-        <div class="sub_menu_wrapper">
-            <div class = "nav">
-                <a href="#" class="Recommend" :class="recommendClass" @click="toggleRecommendArtist">おすすめアーティスト</a>
+        <dic class="nav">
+            <div class="main_menu_wrapper">
+                <div class="artist_name_wrapper" >
+                    {{ artistName }}
+                </div>
+                <div class="list_message">
+                    <span>
+                        <font-awesome-icon 
+                            @click="showFavoriteModal" 
+                            icon="fa-solid fa-circle-chevron-down" 
+                        />
+                    </span>
+                    <span>
+                        <font-awesome-icon
+                            @click="resize"
+                            icon="fa-solid fa-expand" 
+                            class="resize_icon"
+                        />
+                    </span>
+                </div>
             </div>
-            <div class="recommend_artist_wrapper" v-if="recommend_artists.length > 0 && show">
-                <nuxt-link to="/" class="recommend_artist_item" v-for="artist in recommend_artists" :key="artist.id" @click.native="searchMusics(artist.name)">
-                    <div class="artist_content_wrap">
-                        <img :src="artist.image.url" alt="">
-                        <div>{{ artist.name }}</div>
-                    </div>
-                    <!-- /.artist_content_wrap -->
-                </nuxt-link>
-                <!-- /.recommend_artist_item -->
+            <!-- /.main_menu -->
+            <div class="sub_menu_wrapper">
+                <div class = "sub_menu_item">
+                    <a href="#" class="recommend" :class="recommendClass" @click="toggleRecommendArtist">おすすめアーティスト</a>
+                </div>
             </div>
+            <!-- /.sub_menu_wrapper -->
+        </dic>
+        <!-- /.nav -->
+        <div class="recommend_artist_wrapper" v-if="recommend_artists.length > 0 && show_recommend">
+            <nuxt-link to="/" class="recommend_artist_item" v-for="artist in recommend_artists" :key="artist.id" @click.native="searchMusics(artist.name)">
+                <div class="artist_content_wrap">
+                    <img :src="artist.image.url" alt="">
+                    <div>{{ artist.name }}</div>
+                </div>
+                <!-- /.artist_content_wrap -->
+            </nuxt-link>
+            <!-- /.recommend_artist_item -->
         </div>
-        <!-- /.sub_menu_wrapper -->
-        <div class="main_menu_wrapper">
-            <div class="artist_name_wrapper" >
-                {{ artistName }}
-            </div>
-            <div class="list_message">
-                <span>
-                    <font-awesome-icon 
-                        @click="showFavoriteModal" 
-                        icon="fa-solid fa-circle-chevron-down" 
-                    />
-                </span>
-                <span>
-                    <font-awesome-icon
-                        @click="resize"
-                        icon="fa-solid fa-expand" 
-                        class="resize_icon"
-                    />
-                </span>
-            </div>
-        </div>
-        <!-- /.main_menu -->
     </div>
     
 </template>
@@ -50,8 +53,8 @@ export default Vue.extend({
         return{
             show_flag: 1,
             recommend_artists:[],
-            show:false,
-            recommendClass:"closeRecommend"
+            show_recommend:false,
+            recommendClass:"close_recommend"
         };
     },
     methods: {
@@ -79,8 +82,8 @@ export default Vue.extend({
         searchMusics(artist_name:string){
             console.log(artist_name)
             this.$emit('searchMusics', artist_name);
-            this.show = false
-            this.recommendClass = "closeRecommend"
+            this.show_recommend = false
+            this.recommendClass = "close_recommend"
         },
         async getRecommendArtists(){
             const postParams = new URLSearchParams()
@@ -94,12 +97,12 @@ export default Vue.extend({
             this.recommend_artists = res.data
         },
         toggleRecommendArtist(){
-            if(this.show){
-                this.show = false
-                this.recommendClass = "closeRecommend"
+            if(this.show_recommend){
+                this.show_recommend = false
+                this.recommendClass = "close_recommend"
             }else{
-                this.show = true
-                this.recommendClass = "openRecommend"
+                this.show_recommend = true
+                this.recommendClass = "open_recommend"
             }
         }
     },
@@ -110,12 +113,28 @@ export default Vue.extend({
 })
 </script>
 <style scoped>
+    .menu_wrapper{
+        display: flex;
+        position: fixed;
+        flex-direction: column;
+        width: 100%;
+    }
+    .nav{
+        width: 100%;
+        height: 5%;
+        text-align: center;
+        display: flex;
+    }
+    .main_menu_wrapper{
+        width: 30%;
+        height: 100%;
+        text-align: left;
+    }
     .list_message, .artist_name_wrapper{
         font-size:22px;
         color:black;
         padding:0 10px;
         display: inline-block;
-        /* border-radius: 30px; */
         border-radius: 5px;
         background: #fff;
     }
@@ -128,7 +147,6 @@ export default Vue.extend({
         overflow-x: auto;
     }
     .music_info{
-        padding:5px 10px;
         background: black;
         color: white;
         cursor:pointer;
@@ -139,32 +157,14 @@ export default Vue.extend({
         opacity: 0.8;
         background: blue;
     }
-    .menu_wrapper{
-        position: fixed;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        width: 100%;
-        text-align: center;
-    }
-
-    .main_menu_wrapper{
-        /* padding-left: 15px; */
-        margin-top: 10px;
-    }
 
     .sub_menu_wrapper{
-        width: 100%;
-        height: 20%;
+        width: 70%;
+        height: 100%;
+        text-align: right;
     }
 
-    .nav{
-        /* background-color: rgb(40, 40, 40); */
-        width: 100%;
-        text-align: left;
-    }
-
-    .Recommend{
+    .recommend{
         color: rgba(255, 255, 255, 0.6);
         text-decoration: none;
         padding: 0.2rem;
@@ -174,11 +174,11 @@ export default Vue.extend({
         background-color: rgb(40, 40, 40);
     }
 
-    .Recommend:hover{
+    .recommend:hover{
         color: rgb(181, 181, 181);
     }
 
-    .closeRecommend:after {
+    .close_recommend:after {
         content: '';
         display: inline-block;
         width: 6px;
@@ -191,7 +191,7 @@ export default Vue.extend({
         transform: rotate(45deg);
     }
 
-    .openRecommend:after {
+    .open_recommend:after {
         content: '';
         display: inline-block;
         width: 6px;
@@ -205,7 +205,6 @@ export default Vue.extend({
     }
     
     .recommend_artist_wrapper{
-        position: fixed;
         display: flex;
         width: 100%;
         max-height: 90%;
@@ -213,6 +212,7 @@ export default Vue.extend({
         padding-bottom: 12px;
         margin-bottom: 12px;
         overflow-x: scroll;
+        text-align: center;
     }
     .recommend_artist_item{
         width: 12%;

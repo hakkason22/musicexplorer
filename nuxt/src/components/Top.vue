@@ -8,10 +8,10 @@
         </div>
 
         <div class="recommend_artist_wrapper" v-if="recommend_artists.length > 0">
-            <nuxt-link to="/" class="recommend_artist_item" v-for="artist in recommend_artists" :key="artist.id" @click.native="onSubmitFromRecommend(artist.name)">
+            <nuxt-link to="/" class="recommend_artist_item" v-for="artist in recommend_artists" :key="artist.id" @click.native="searchMusics(artist.name)">
                 <div class="artist_content_wrap">
                     <img :src="artist.image.url" alt="">
-                    <h3>{{ artist.name }}</h3>
+                    <div>{{ artist.name }}</div>
                 </div>
                 <!-- /.artist_content_wrap -->
             </nuxt-link>
@@ -38,10 +38,8 @@ export default Vue.extend({
         onSubmit(){
             this.$emit('searchMusic', this.artist_name);
         },
-        onSubmitFromRecommend(artist_name:string){
-            console.log(artist_name)
-            this.artist_name = artist_name
-            this.$emit('searchMusic', this.artist_name);
+        searchMusics(artist_name:string){
+            this.$emit('searchMusics', artist_name);
         },
         async getRecommendArtists(){
             const postParams = new URLSearchParams()
@@ -129,14 +127,19 @@ export default Vue.extend({
         left: 0;
         right: 0;
         bottom: 0;
+        font-size: 1.5vw;
     }
 
     .artist_content_wrap img{
         width: 50%;
         height: 50%;
-        margin-top: 20px;
+        margin: 1vw;
 
         border-radius: 10px;
         background-color: black;
+    }
+
+    .artist_content_wrap div{
+        padding: 0 5px;
     }
 </style>

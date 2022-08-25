@@ -66,7 +66,6 @@ class MusicController:
         results = self.spotify.search(
             q=artist_name, type="artist", market="JP", limit=1)    
         # resultはsptifyにアーティストについて教えてで検索かけて出た検索結果
-        
         items = results["artists"]["items"]
         # アーティストの欄を見ると、アーティスト名のリストがバーッてあっていろんな情報が入ってる
         #キーがitemsの情報は検索でヒットしたアーティスト名をとってきて、itemsという変数に配列を格納
@@ -94,7 +93,7 @@ class MusicController:
         """
         # アーティストIDからアルバム情報を取得
         results = self.spotify.artist_albums(
-            artist_id, limit=20, album_type='album')
+            artist_id, limit=20, album_type='album,single')
         album_records = results['items']
         if not album_records:
             return None
@@ -186,8 +185,6 @@ class MusicController:
         
         a_track_set = set(a_trackId_list)
 
-
-
         
         
 
@@ -212,7 +209,6 @@ class MusicController:
 
         #パラメータの被りを解消
         track_list = self.__delete_same_param_music(track_list)
-
         return track_list
 
     def __delete_same_param_music(self,track_list:list):

@@ -36,7 +36,7 @@ export default Vue.extend({
     },
     methods: {
         onSubmit(){
-            this.$emit('searchMusic', this.artist_name);
+            this.$emit('searchMusics', this.artist_name);
         },
         searchMusics(artist_name:string){
             this.$emit('searchMusics', artist_name);

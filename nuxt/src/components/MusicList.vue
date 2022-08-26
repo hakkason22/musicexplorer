@@ -1,6 +1,6 @@
 <template>
     <div class="menu_wrapper">
-        <dic class="nav">
+        <div class="nav">
             <div class="main_menu_wrapper">
                 <div class="artist_name_wrapper" >
                     {{ artistName }}
@@ -28,7 +28,7 @@
                 </div>
             </div>
             <!-- /.sub_menu_wrapper -->
-        </dic>
+        </div>
         <!-- /.nav -->
         <div class="recommend_artist_wrapper" v-if="recommend_artists.length > 0 && show_recommend">
             <nuxt-link to="/" class="recommend_artist_item" v-for="artist in recommend_artists" :key="artist.id" @click.native="searchMusics(artist.name)">

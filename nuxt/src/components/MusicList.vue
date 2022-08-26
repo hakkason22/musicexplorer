@@ -24,7 +24,11 @@
             <!-- /.main_menu -->
             <div class="sub_menu_wrapper">
                 <div class = "sub_menu_item">
-                    <a href="#" class="recommend" :class="recommendClass" @click="toggleRecommendArtist">おすすめアーティスト</a>
+                    <a href="#" class="recommend_button" @click="toggleRecommendArtist">
+                        おすすめアーティスト
+                        <font-awesome-icon v-if="show_recommend" icon="fa-solid fa-angle-up" />
+                         <font-awesome-icon v-else icon="fa-solid fa-angle-down" />
+                    </a>
                 </div>
             </div>
             <!-- /.sub_menu_wrapper -->
@@ -54,7 +58,6 @@ export default Vue.extend({
             show_flag: 1,
             recommend_artists:[],
             show_recommend:false,
-            recommendClass:"close_recommend"
         };
     },
     methods: {
@@ -83,7 +86,6 @@ export default Vue.extend({
             console.log(artist_name)
             this.$emit('searchMusics', artist_name);
             this.show_recommend = false
-            this.recommendClass = "close_recommend"
         },
         async getRecommendArtists(){
             const postParams = new URLSearchParams()
@@ -99,10 +101,8 @@ export default Vue.extend({
         toggleRecommendArtist(){
             if(this.show_recommend){
                 this.show_recommend = false
-                this.recommendClass = "close_recommend"
             }else{
                 this.show_recommend = true
-                this.recommendClass = "open_recommend"
             }
         }
     },
@@ -168,14 +168,14 @@ export default Vue.extend({
         text-align: right;
     }
 
-    .recommend{
-        color: rgba(255, 255, 255, 0.6);
+    .recommend_button{
+        color: rgba(255, 255, 255);
         text-decoration: none;
         padding: 0.2rem;
         border: solid;
-        border-color: rgb(124, 124, 124);
+        border-color: rgb(252, 250, 250);
         border-radius: 5px;
-        background-color: rgb(40, 40, 40);
+        background-color: rgb(0, 0, 0, 0.8);
     }
 
     .recommend:hover{

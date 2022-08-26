@@ -46,7 +46,7 @@ export default Vue.extend({
             chart_font_size: 14,
             normal_color: "#FFFEF9",
             favorite_color: "#00fa9a",
-            playing_color: "#e4007f",
+            playing_color: "#ff00ff",
             prev_point: { x: 0, y: 0 },
             is_panning: false,
             chart_cursor: "chart_grab"

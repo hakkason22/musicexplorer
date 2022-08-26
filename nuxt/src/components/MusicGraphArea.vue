@@ -126,7 +126,7 @@ export default Vue.extend({
             const params: any = new URLSearchParams();
             params.append("user_id", user_id);
             const response = await axios.post(url, params);
-            console.log(response.data);
+
             const favoriteMusicInfos: Array<Music> = response.data.data;
             let favorite_music_ids: Array<string> = [];
             favoriteMusicInfos.forEach((favoriteMusicInfo: Music) => {
@@ -135,6 +135,8 @@ export default Vue.extend({
             this.musicInfos.forEach((musicInfo: Music) => {
                 if (favorite_music_ids.includes(musicInfo.music_id)) {
                     musicInfo.is_favorite = true;
+                } else{
+                    musicInfo.is_favorite = false;
                 }
             });
             this.setup();

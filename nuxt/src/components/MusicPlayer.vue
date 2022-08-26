@@ -32,6 +32,15 @@
 <script lang="ts">
 import Vue from 'vue'
 import axios from 'axios'
+
+type musicInfos = {
+    music_id: string,
+    music_name: string,
+    valence: number,
+    energy: number,
+    favorite_music_id: number,
+}
+
 export default Vue.extend({
     methods: {
         async registerFavorite() {
@@ -53,7 +62,27 @@ export default Vue.extend({
                 this.$emit('setFavoriteMusicInfo');
             }
         },
-        
+        async deleteFavorite() {
+            const user_id: string = this.$store.getters.user.uid;
+            const list_url: string = `${process.env.BACKEND_ROOT}/music/favorite/list`;
+            const list_params: any = new URLSearchParams();
+            list_params.append("user_id", user_id);
+            const list_response = await axios.post(list_url, list_params);
+            const favoriteMusicInfos: Array<musicInfos> = list_response.data.data;
+
+            const target_favorite_music_id: number = favoriteMusicInfos.filter(
+                (music) => music.music_id === this.$store.state.player.target_music_id
+            )[0].favorite_music_id
+
+            const delete_url: string = `${process.env.BACKEND_ROOT}/music/favorite/delete`
+            const delete_params: any = new URLSearchParams()
+            delete_params.append('favorite_music_ids', [target_favorite_music_id]);
+            const response = await axios.post(delete_url, delete_params).catch((error) => {
+                throw new Error(error)
+            })
+            this.$store.commit("player/setPlayerFavorite", false);
+            this.$emit('setFavoriteMusicInfo');
+        },
     }
 })
 </script>
@@ -79,14 +108,13 @@ export default Vue.extend({
         border-radius: 50%;
         padding: 10px;
         font-size: 18px;
+        cursor: pointer;
     }
     .faved{
         color: black;
         background: lightgray;
-        cursor: default;
     }
     .not_faved{
         background: white;
-        cursor: pointer;
     }
 </style>

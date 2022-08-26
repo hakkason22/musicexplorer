@@ -72,6 +72,7 @@ export default Vue.extend({
                   this.target_artist_name = this.target_musics[0]["artist_name"];
                 }
             }
+            this.$store.commit("recommend/setShowRecommend", false)
             this.$store.commit("loading/loading_state", false);
         },
     },

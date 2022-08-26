@@ -26,7 +26,7 @@
                 <div class = "sub_menu_item">
                     <a href="#" class="recommend_button" @click="toggleRecommendArtist">
                         おすすめアーティスト
-                        <font-awesome-icon v-if="show_recommend" icon="fa-solid fa-angle-up" />
+                        <font-awesome-icon v-if="$store.state.recommend.show_recommend" icon="fa-solid fa-angle-up" />
                          <font-awesome-icon v-else icon="fa-solid fa-angle-down" />
                     </a>
                 </div>
@@ -34,7 +34,7 @@
             <!-- /.sub_menu_wrapper -->
         </div>
         <!-- /.nav -->
-        <div class="recommend_artist_wrapper" v-if="recommend_artists.length > 0 && show_recommend">
+        <div class="recommend_artist_wrapper" v-if="recommend_artists.length > 0 && $store.state.recommend.show_recommend">
             <nuxt-link to="/" class="recommend_artist_item" v-for="artist in recommend_artists" :key="artist.id" @click.native="searchMusics(artist.name)">
                 <div class="artist_content_wrap">
                     <img :src="artist.image.url" alt="">
@@ -57,7 +57,6 @@ export default Vue.extend({
         return{
             show_flag: 1,
             recommend_artists:[],
-            show_recommend:false,
         };
     },
     methods: {
@@ -85,7 +84,6 @@ export default Vue.extend({
         searchMusics(artist_name:string){
             console.log(artist_name)
             this.$emit('searchMusics', artist_name);
-            this.show_recommend = false
         },
         async getRecommendArtists(){
             const postParams = new URLSearchParams()
@@ -99,10 +97,10 @@ export default Vue.extend({
             this.recommend_artists = res.data
         },
         toggleRecommendArtist(){
-            if(this.show_recommend){
-                this.show_recommend = false
+            if(this.$store.state.recommend.show_recommend){
+                this.$store.commit('recommend/setShowRecommend', false)
             }else{
-                this.show_recommend = true
+                this.$store.commit('recommend/setShowRecommend', true)
             }
         }
     },

@@ -117,7 +117,11 @@ export default Vue.extend({
         display: flex;
         position: fixed;
         flex-direction: column;
-        width: 100%;
+        width: 95%;
+        top: 10%;
+        left: 0;
+        right: 0;
+        margin: auto;
     }
     .nav{
         width: 100%;

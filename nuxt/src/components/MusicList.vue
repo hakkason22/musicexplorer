@@ -24,13 +24,17 @@
             <!-- /.main_menu -->
             <div class="sub_menu_wrapper">
                 <div class = "sub_menu_item">
-                    <a href="#" class="recommend" :class="recommendClass" @click="toggleRecommendArtist">おすすめアーティスト</a>
+                    <a href="#" class="recommend_button" @click="toggleRecommendArtist">
+                        おすすめアーティスト
+                        <font-awesome-icon v-if="$store.state.recommend.show_recommend" icon="fa-solid fa-angle-up" />
+                         <font-awesome-icon v-else icon="fa-solid fa-angle-down" />
+                    </a>
                 </div>
             </div>
             <!-- /.sub_menu_wrapper -->
         </div>
         <!-- /.nav -->
-        <div class="recommend_artist_wrapper" v-if="recommend_artists.length > 0 && show_recommend">
+        <div class="recommend_artist_wrapper" v-if="recommend_artists.length > 0 && $store.state.recommend.show_recommend">
             <nuxt-link to="/" class="recommend_artist_item" v-for="artist in recommend_artists" :key="artist.id" @click.native="searchMusics(artist.name)">
                 <div class="artist_content_wrap">
                     <img :src="artist.image.url" alt="">
@@ -53,8 +57,6 @@ export default Vue.extend({
         return{
             show_flag: 1,
             recommend_artists:[],
-            show_recommend:false,
-            recommendClass:"close_recommend"
         };
     },
     methods: {
@@ -82,8 +84,6 @@ export default Vue.extend({
         searchMusics(artist_name:string){
             console.log(artist_name)
             this.$emit('searchMusics', artist_name);
-            this.show_recommend = false
-            this.recommendClass = "close_recommend"
         },
         async getRecommendArtists(){
             const postParams = new URLSearchParams()
@@ -97,12 +97,10 @@ export default Vue.extend({
             this.recommend_artists = res.data
         },
         toggleRecommendArtist(){
-            if(this.show_recommend){
-                this.show_recommend = false
-                this.recommendClass = "close_recommend"
+            if(this.$store.state.recommend.show_recommend){
+                this.$store.commit('recommend/setShowRecommend', false)
             }else{
-                this.show_recommend = true
-                this.recommendClass = "open_recommend"
+                this.$store.commit('recommend/setShowRecommend', true)
             }
         }
     },
@@ -117,7 +115,11 @@ export default Vue.extend({
         display: flex;
         position: fixed;
         flex-direction: column;
-        width: 100%;
+        width: 95%;
+        top: 10%;
+        left: 0;
+        right: 0;
+        margin: auto;
     }
     .nav{
         width: 100%;
@@ -164,14 +166,13 @@ export default Vue.extend({
         text-align: right;
     }
 
-    .recommend{
-        color: rgba(255, 255, 255, 0.6);
+    .recommend_button{
+        color: rgba(255, 255, 255);
         text-decoration: none;
         padding: 0.2rem;
-        border: solid;
-        border-color: rgb(124, 124, 124);
         border-radius: 5px;
-        background-color: rgb(40, 40, 40);
+        border: 1px rgb(252, 250, 250) solid;
+        background-color: rgb(0, 0, 0, 0.8);
     }
 
     .recommend:hover{

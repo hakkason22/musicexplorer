@@ -172,9 +172,8 @@ export default Vue.extend({
         color: rgba(255, 255, 255);
         text-decoration: none;
         padding: 0.2rem;
-        border: solid;
-        border-color: rgb(252, 250, 250);
         border-radius: 5px;
+        border: 1px rgb(252, 250, 250) solid;
         background-color: rgb(0, 0, 0, 0.8);
     }
 

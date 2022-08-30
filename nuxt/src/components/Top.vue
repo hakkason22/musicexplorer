@@ -1,10 +1,14 @@
 <template>
     <div class="top_wrapper">
-        <div class="message_wrapper">
-            <h1 class="top_message">Welcome to MusicExplorer, </h1>
-            <p class="top_message">
-                <input class="top_input_area" type="text" v-model="artist_name" placeholder="search your favorite artists." @keypress.enter="onSubmit">
-            </p>
+        <h1 class="top_message">Welcome to MusicExplorer, </h1>
+        <div class="search_bar_wrapper">
+            <input class="search_bar_item top_input_area" type="text" v-model="artist_name" placeholder="search your favorite artists." @keypress.enter="onSubmit">
+            <div class="search_bar_item help">
+                <a href="">
+                    <img src="../images/help.svg" alt="">
+                </a>
+            </div>
+            <!-- /.help -->
         </div>
 
         <div class="recommend_artist_wrapper" v-if="recommend_artists.length > 0">
@@ -78,6 +82,38 @@ export default Vue.extend({
         font-size: 20px;
         border-radius: 30px;
         padding: 0px 20px;
+    }
+
+    .search_bar_wrapper{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .search_bar_item{
+        margin: 0 5px;
+    }
+
+    .help{
+        width: 3%;
+        padding-top: 3%;
+        position: relative;
+    }
+    .help a{
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 100%;
+        width: 100%;
+        border-radius: 50%;
+    }
+
+    .help a img{
+        height: 100%;
+        width: 100%;
     }
 
     .recommend_artist_wrapper{

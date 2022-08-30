@@ -15,6 +15,9 @@
                 <LoginInductionModal
                     v-else-if="modalType==='login-induction'"
                 />
+                <UsageModal
+                    v-else-if="modalType==='usage'"
+                />
             </div>
         </div>
     </div>
@@ -24,6 +27,7 @@ import Vue from 'vue'
 import DeleteFavoriteModal from './DeleteFavoriteModal.vue';
 import AddFavoriteModal from './AddFavoriteModal.vue';
 import LoginInductionModal from './LoginInductionModal.vue';
+import UsageModal from './UsageModal.vue';
 
 export default Vue.extend({
     props:["modalType"],
@@ -40,7 +44,8 @@ export default Vue.extend({
     components:{
         DeleteFavoriteModal,
         AddFavoriteModal,
-        LoginInductionModal
+        LoginInductionModal,
+        UsageModal
     },
     mounted() {
         console.log(this.modalType)

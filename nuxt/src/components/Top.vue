@@ -4,7 +4,7 @@
         <div class="search_bar_wrapper">
             <input class="search_bar_item top_input_area" type="text" v-model="artist_name" placeholder="search your favorite artists." @keypress.enter="onSubmit">
             <div class="search_bar_item help">
-                <a href="">
+                <a v-prevent-click @click='showUsageModal'>
                     <img src="../images/help.svg" alt="">
                 </a>
             </div>
@@ -55,7 +55,10 @@ export default Vue.extend({
             })
 
             this.recommend_artists = res.data
-        }
+        },
+        showUsageModal(){
+            this.$store.commit('modal/showModal', 'usage');
+        },
     },
     mounted: function(){
         this.getRecommendArtists()

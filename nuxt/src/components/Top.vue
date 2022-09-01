@@ -4,7 +4,7 @@
         <div class="search_bar_wrapper">
             <input class="search_bar_item top_input_area" type="text" v-model="artist_name" placeholder="search your favorite artists." @keypress.enter="onSubmit">
             <div class="search_bar_item help">
-                <a v-prevent-click @click='showUsageModal'>
+                <a @click.prevent='showUsageModal'>
                     <img src="../images/help.svg" alt="">
                 </a>
             </div>

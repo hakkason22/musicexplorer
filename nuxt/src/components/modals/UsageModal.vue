@@ -52,9 +52,9 @@
         </div>
         <!-- /#usage_card -->
         <div id="usage_pagination">
-            <a v-prevent-default id="back_page" class="usage_pagination_item" @click="back_usage_page"></a>
+            <a id="back_page" class="usage_pagination_item" @click.prevent="back_usage_page"></a>
             <!-- /.usage_pagination_item -->
-            <a v-prevent-default id="next_page" class="usage_pagination_item" @click="next_usage_page"></a>
+            <a id="next_page" class="usage_pagination_item" @click.prevent="next_usage_page"></a>
             <!-- /.usage_pagination_item -->
         </div>
         <!-- /#usage_paging -->

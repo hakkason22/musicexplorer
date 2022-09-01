@@ -195,8 +195,9 @@ class MusicController:
         max = 100
         i = 0
         while i < len(a_track_list)//100*100:
+            pre_i = i
             i += max
-            track_features.extend(self.spotify.audio_features(a_track_list[:i]))
+            track_features.extend(self.spotify.audio_features(a_track_list[pre_i:i]))
         track_features.extend(self.spotify.audio_features(a_track_list[i:]))
 
         for track_feature in track_features:

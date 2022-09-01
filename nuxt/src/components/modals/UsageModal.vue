@@ -37,18 +37,6 @@
                 <!-- /.card_figure -->
             </div>
             <!-- /.usage_item -->
-            <div id='usage_4' class="usage_card" v-show="$store.getters['usage/show_usage_page'](4)">
-                <div class="card_title">
-                    <p class="card_title_index">STEP4</p>
-                    <p class="card_title_text">……！！</p>
-                </div>
-                <!-- /.card_title -->
-                <div class="card_figure">
-                    
-                </div>
-                <!-- /.card_figure -->
-            </div>
-            <!-- /.usage_item -->
         </div>
         <!-- /#usage_card -->
         <div id="usage_pagination">
@@ -71,7 +59,7 @@ export default Vue.extend({
         }
     },
     mounted(){
-    
+        this.$store.commit("usage/set_max_page",3)
     },
     methods:{
         next_usage_page(){

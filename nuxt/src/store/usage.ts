@@ -17,6 +17,9 @@ const mutations = {
         }
         state.usage_page -= 1;
     },
+    set_max_page(state:any,max:number){
+        state.max_page = max
+    }
 }
 
 const getters = {

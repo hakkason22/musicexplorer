@@ -183,14 +183,22 @@ class MusicController:
             
                
         
-        a_track_set = set(a_trackId_list)
+        a_track_list = list(set(a_trackId_list))
 
         
         
 
         track_list = []
+        
         # トラックIDから各種パラメータを取得
-        track_features = self.spotify.audio_features(list(a_track_set))
+        track_features = []
+        max = 100
+        i = 0
+        while i < len(a_track_list)//100*100:
+            i += max
+            track_features.extend(self.spotify.audio_features(a_track_list[:i]))
+        track_features.extend(self.spotify.audio_features(a_track_list[i:]))
+
         for track_feature in track_features:
 
             if not track_feature:

@@ -11,12 +11,12 @@
     />
     <div class="container" v-else>
       <Top 
-        v-if="target_artist_name == ''"
+        v-if="!$route.query.target_artist"
         @searchMusics='searchMusics'
       />
       <MusicField v-else 
-        :music-infos="target_musics" 
-        :artist-name="target_artist_name"
+        :music-infos="$store.getters['musics/getMusics']" 
+        :artist-name="$store.getters['musics/getArtistName']"
         @searchMusics='searchMusics'
       />
     </div>
@@ -49,9 +49,14 @@ export default Vue.extend({
             is_loading: false,
         };
     },
+    fetch(){
+      if (this.$route.query.target_artist && !this.$store.getters['musics/getArtistName']){
+        this.searchMusics(this.$route.query.target_artist as string)
+      }
+    },
     mounted() {
         this.$store.commit("modal/closeModal");
-    },
+    },  
     methods: {
         async searchMusics(value: string) {
             this.$store.commit("loading/loading_state", true);
@@ -68,12 +73,14 @@ export default Vue.extend({
             else {
                 this.error_msg = "";
                 if(this.target_artist_name !== response.data[0]["artist_name"]) {
-                  this.target_musics = response.data;
-                  this.target_artist_name = this.target_musics[0]["artist_name"];
+                  this.$store.commit("musics/setMusics",response.data)
+                  this.target_artist_name = response.data[0]["artist_name"]
+                  this.$store.commit("musics/setArtistName",response.data[0]["artist_name"])
                 }
             }
             this.$store.commit("recommend/setShowRecommend", false)
             this.$store.commit("loading/loading_state", false);
+            this.$router.push({ path: '/',query:{target_artist : this.target_artist_name} })
         },
     },
     components: { Modal }

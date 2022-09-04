@@ -35,13 +35,13 @@
         </div>
         <!-- /.nav -->
         <div class="recommend_artist_wrapper" v-if="recommend_artists.length > 0 && $store.state.recommend.show_recommend">
-            <nuxt-link to="/" class="recommend_artist_item" v-for="artist in recommend_artists" :key="artist.id" @click.native="searchMusics(artist.name)">
+            <a href="#" class="recommend_artist_item" v-for="artist in recommend_artists" :key="artist.id" @click.prevent="searchMusics(artist.name)">
                 <div class="artist_content_wrap">
                     <img :src="artist.image.url" alt="">
                     <div>{{ artist.name }}</div>
                 </div>
                 <!-- /.artist_content_wrap -->
-            </nuxt-link>
+            </a>
             <!-- /.recommend_artist_item -->
         </div>
     </div>

@@ -198,11 +198,8 @@ export default Vue.extend({
         text-align: center;
         user-select: none;
     }
-    .chart_grab {
-        cursor: grab;
-    }
     .chart_grabbing {
-        cursor: grabbing;
+        cursor: crosshair;
     }
     .graph_element{
         cursor: pointer !important;

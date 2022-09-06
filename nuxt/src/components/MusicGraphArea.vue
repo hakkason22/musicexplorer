@@ -22,6 +22,9 @@
     <MusicPlayer v-if="$store.state.player.target_music_id !== ''"
         @setFavoriteMusicInfo="setFavoriteMusicInfo"
     />
+    <div class="conpass">
+        <img src="../images/conpass.png" >
+    </div>
   </div>
 </template>
 
@@ -39,8 +42,8 @@ export default Vue.extend({
             svg_height: 1000,
             svg_min_width: 0,
             svg_min_height: 0,
-            chart_width: 300,
-            chart_height: 220,
+            chart_width: 240,
+            chart_height: 300,
             chart_min_width: 0,
             chart_min_height: 0,
             chart_font_size: 14,
@@ -193,6 +196,8 @@ export default Vue.extend({
     components: { MusicPlayer }
 })
 </script>
+
+
 <style scoped>
     .chart_wrapper{
         text-align: center;
@@ -208,6 +213,16 @@ export default Vue.extend({
     .graph_element:hover {
         opacity: 0.9;
     }
+    .conpass{
+        position: fixed;
+        bottom: 0px;
+        right: 0px;
+    }
+    .conpass img{
+        width: 320px;
+        height: 200px;
+    }
 </style>
+
 
 

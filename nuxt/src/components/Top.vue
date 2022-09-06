@@ -28,6 +28,7 @@
 
     </div>
 </template>
+
 <script lang="ts">
 import axios from 'axios';
 import Vue from 'vue'

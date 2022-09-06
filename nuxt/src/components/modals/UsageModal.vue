@@ -1,7 +1,7 @@
 <template>
     <div id="usage_container">
         <div id="usage_cards">
-            <div id='usage_1' class="usage_card" v-show="$store.getters['usage/show_usage_page'](1)">
+            <div id='usage_1' class="usage_card" v-show="now_page == 1">
                 <div class="card_title">
                     <p class="card_title_index">STEP1</p>
                     <p class="card_title_text">アーティストを検索！！</p>
@@ -35,7 +35,7 @@
                 <!-- /.card_figure -->
             </div>
             <!-- /.usage_item -->
-            <div id='usage_2' class="usage_card" v-show="$store.getters['usage/show_usage_page'](2)">
+            <div id='usage_2' class="usage_card" v-show="now_page == 2">
                 <div class="card_title">
                     <p class="card_title_index">STEP2</p>
                     <p class="card_title_text">お気に入りの曲を探そう！！</p>
@@ -72,7 +72,7 @@
                 <!-- /.card_figure -->
             </div>
             <!-- /.usage_item -->
-            <div id='usage_3' class="usage_card" v-show="$store.getters['usage/show_usage_page'](3)">
+            <div id='usage_3' class="usage_card" v-show="now_page == 3">
                 <div class="card_title">
                     <p class="card_title_index">STEP3</p>
                     <p class="card_title_text">お気に入り曲をプロット！！</p>
@@ -115,20 +115,22 @@ import Vue from 'vue'
 export default Vue.extend({
     data(){
         return {
-           
+           now_page: 1,
+           max_page: 3
         }
-    },
-    mounted(){
-        this.$store.commit("usage/set_max_page",3)
     },
     methods:{
         next_usage_page(){
-            this.$store.commit("usage/next_usage_page")
-            console.log(this.$store.state.usage.usage_page)
+            if(this.now_page < this.max_page){
+                this.now_page += 1
+            }
+            console.log(this.now_page)
         },
         back_usage_page(){
-            this.$store.commit("usage/back_usage_page")
-            console.log(this.$store.state.usage.usage_page)
+            if(this.now_page > 1){
+                this.now_page -= 1
+            }
+            console.log(this.now_page)
         }
     }
 })

@@ -49,7 +49,7 @@ class RecommendArtistController:
         recommend_artists_re = []
         for artist in recommend_artists['artists']:
             # Artist オブジェクトを生成して、RecommendArtistsData に　値を移し替える、vars() でフィールドを dict 型で取得
-            recommend_artists_re.append(vars(RecommendArtistData(Artist(artist['id'],artist['name'],artist['images']))))
+            recommend_artists_re.append(vars(RecommendArtistData(Artist(artist))))
         return recommend_artists_re
 
     def get_popular_artists(self):

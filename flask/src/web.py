@@ -7,6 +7,7 @@ from common.RecommendArtistController import RecommendArtistController
 
 from common.libs.Database import init_db,db
 from common.models.FavoriteMusic import FavoriteMusic
+import time
 
 app = Flask(__name__)
 load_dotenv()  # .envファイルの内容を環境変数として読み込み
@@ -30,29 +31,13 @@ def Home():
 @app.route('/music/list', methods=["POST"])
 def send_music_list():
     """アーティスト名からアーティストの曲情報を提供する
-
-    アーティスト名から曲情報
-        data(dict): jsonify()に渡す引数
-            format: 
-            [
-                {
-                    "music_name":"value",
-                    "valence":"value",
-                    "arousal":"value",
-                    "music_id:"value",
-                    "artist_name":"value"
-                },
-                '''
-                '''
-            ]
-
-    Returns:
-        str: json形式の楽曲リストを返す
     """
+    start = time.time()
     music_controller = MusicController()
-    artist_name = str(request.form.get("artist_name"))
+    keyword = str(request.form.get("artist_name"))
     # アーティスト名から楽曲リストを持ってくる
-    re = music_controller.requestToSpotify(artist_name)
+    re = music_controller.run(keyword)
+    print(time.time()-start)
     return jsonify(re)
 
 
@@ -69,6 +54,14 @@ def favorite_manager(purpose: str):
 @app.route('/artist/recommend',methods=["POST"])
 def recommend_artists():
     """おすすめアーティストを返す
+    """
+    recommend_controller = RecommendArtistController()
+    result = recommend_controller.get_recommend_artists(request.form.get('user_id'))
+    return jsonify(result)
+
+@app.route('/spotify/login',methods=["POST"])
+def login():
+    """ログイン処理
     """
     recommend_controller = RecommendArtistController()
     result = recommend_controller.get_recommend_artists(request.form.get('user_id'))

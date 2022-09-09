@@ -23,6 +23,20 @@
         @setFavoriteMusicInfo="setFavoriteMusicInfo"
     />
     <div class="conpass">
+        <svg 
+            :viewBox="location_viewbox" 
+            :width="location_svg_width"
+            :height="location_svg_height"
+        >
+        <g>
+            <circle
+                class="conpass_location"
+                :cx="location_width / 2"
+                :cy="location_height / 2"
+                :r="location_size"
+            />
+        </g>
+        </svg>
         <img src="../images/conpass.png" >
     </div>
   </div>
@@ -52,7 +66,16 @@ export default Vue.extend({
             playing_color: "#ff00ff",
             prev_point: { x: 0, y: 0 },
             is_panning: false,
-            chart_cursor: "chart_grab"
+            chart_cursor: "chart_grab",
+            location_svg_width: 320,
+            location_svg_height: 263,
+            location_width: 320,
+            location_height: 263,
+            location_size: 105,
+            location_width_rate: 0,
+            location_height_rate: 0,
+            location_min_width: 0,
+            location_min_height: 0
         };
     },
     mounted() {
@@ -67,7 +90,10 @@ export default Vue.extend({
     computed: {
         viewbox: function (): string {
             return [this.chart_min_width, this.chart_min_height, this.chart_width, this.chart_height].join(" ");
-        }
+        },
+        location_viewbox: function (): string {
+            return [this.location_min_width, this.location_min_height, this.location_width, this.location_height].join(" ");
+        },
     },
     methods: {
         setup() {
@@ -98,6 +124,7 @@ export default Vue.extend({
             this.setup();
             this.setFavoriteMusicInfo();
             this.setChartSize();
+            this.setLocation();
         },
         setChartSize() {
             this.chart_width = window.innerWidth;
@@ -109,6 +136,13 @@ export default Vue.extend({
             this.svg_min_width = this.chart_min_width;
             this.svg_min_height = this.chart_min_height;
             this.chart_font_size = 14;
+        },
+        setLocation(){
+            this.location_width_rate = this.location_width / this.chart_width
+            this.location_height_rate = this.location_height / this.chart_height
+            this.location_size = 105
+            this.location_min_width = 0
+            this.location_min_height = 0
         },
         addUpdateData(targetMusicInfo: Music) {
             targetMusicInfo.is_favorite = true;
@@ -167,6 +201,11 @@ export default Vue.extend({
             const pan_rate = 0.4;
             this.chart_min_width = this.chart_min_width - point.x * pan_rate;
             this.chart_min_height = this.chart_min_height - point.y * pan_rate;
+
+            const location_pan_rate = 0.08
+            this.location_min_width = this.location_min_width - point.x * location_pan_rate * (-1);
+            this.location_min_height = this.location_min_height - point.y * location_pan_rate * (-1);
+
             this.prev_point = {
                 x: event.offsetX,
                 y: event.offsetY
@@ -191,6 +230,7 @@ export default Vue.extend({
             this.chart_min_width = target_x + scale * (this.chart_min_width - target_x);
             this.chart_min_height = target_y + scale * (this.chart_min_height - target_y);
             this.chart_font_size *= scale;
+            this.location_size *= scale
         }
     },
     components: { MusicPlayer }
@@ -215,12 +255,23 @@ export default Vue.extend({
     }
     .conpass{
         position: fixed;
-        bottom: 0px;
-        right: 0px;
+        bottom: 2%;
+        right: 2%;
+        border-radius: 50%;
     }
     .conpass img{
+        position: absolute;
+        top: 0;
+        right: 0;
         width: 320px;
-        height: 200px;
+        height: 263px;
+    }
+    .conpass svg {
+        border-radius: 50%;
+    }
+    .conpass_location{
+        opacity: 0.5;
+        fill: rgb(13, 224, 150); 
     }
 </style>
 

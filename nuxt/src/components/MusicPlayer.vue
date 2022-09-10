@@ -1,6 +1,9 @@
 <template>
     <div class="player_wrapper">
         <div class="player_area">
+            <div class="to_spotify_link">
+                <a :href="'https://open.spotify.com/track/' + $store.state.player.target_music_id" target="_blank" class="listen_to_spotify">Spotifyで聴く</a>
+            </div>
             <iframe
                 style="border-radius:12px"
                 :src="'https://open.spotify.com/embed/track/'+$store.state.player.target_music_id+'?utm_source=generator'"
@@ -116,5 +119,13 @@ export default Vue.extend({
     }
     .not_faved{
         background: white;
+    }
+    .to_spotify_link{
+        text-align: right;
+    }
+    .listen_to_spotify{
+        color: white;
+        font-size: 12px;
+        text-decoration: none;
     }
 </style>

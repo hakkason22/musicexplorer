@@ -22,6 +22,9 @@
     <MusicPlayer v-if="$store.state.player.target_music_id !== ''"
         @setFavoriteMusicInfo="setFavoriteMusicInfo"
     />
+    <SearchMusic
+        @displayDetail="displayDetail"
+    />
     <div class="conpass">
         <svg 
             :viewBox="location_viewbox" 

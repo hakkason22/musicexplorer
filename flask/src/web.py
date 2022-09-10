@@ -37,7 +37,7 @@ def send_music_list():
     keyword = str(request.form.get("artist_name"))
     # アーティスト名から楽曲リストを持ってくる
     re = music_controller.run(keyword)
-    print(time.time()-start)
+    print(f'Processed /music/list: {time.time()-start} s')
     return jsonify(re)
 
 

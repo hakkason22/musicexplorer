@@ -1,11 +1,8 @@
 from common.models.FavoriteMusic import FavoriteMusic 
 from common.artist.RecommendArtistData import RecommendArtistData
 from common.artist.Artist import Artist
+from common.libs.SpotifyAPIService import SpotifyAPIService
 
-from sqlalchemy.sql import func
-import spotipy
-from spotipy.oauth2 import SpotifyClientCredentials
-import os
 import random
 import datetime
 
@@ -13,10 +10,7 @@ class RecommendArtistController:
     """おすすめアーティストに関するコントローラ
     """
     def __init__(self) -> None:
-        # 初期化
-        self.spotify = spotipy.Spotify(
-            client_credentials_manager=SpotifyClientCredentials(client_id = os.environ['SPOTIFY_CLIENT_ID'], client_secret = os.environ['SPOTIFY_SECRET_ID']),
-            language='ja')
+        self.spotify = SpotifyAPIService()
 
     def get_recommend_artists(self,user_id):
         # user_id が空だったら、有名アーティストを返す
@@ -41,10 +35,10 @@ class RecommendArtistController:
 
         # 最初からデータベースにartist情報も保存すべきか？
         # music_id から　artist_id を取得
-        artist_id = self.spotify.track(favorite_music.music_id)['artists'][0]['id']
+        artist_id = self.spotify.get_track(favorite_music.music_id)['artists'][0]['id']
 
         # ランダムに取得したお気に入り楽曲のアーティストから、関連するアーティストを取得する
-        recommend_artists = self.spotify.artist_related_artists(artist_id)
+        recommend_artists = self.spotify.get_artist_related_artists(artist_id)
 
         recommend_artists_re = []
         for artist in recommend_artists['artists']:
@@ -61,7 +55,7 @@ class RecommendArtistController:
 
         # 現在の年で検索
         # マーケットはとりあえずJPにした
-        recommend_artists = self.spotify.search(q=f"year:{year}",limit=20,type='artist',market='JP')
+        recommend_artists = self.spotify.search(q=f"year:{year}",type='artist',limit=20)
 
         recommend_artists_re = []
         for artist in recommend_artists['artists']['items']:

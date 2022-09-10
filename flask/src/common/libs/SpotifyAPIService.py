@@ -4,6 +4,7 @@ from spotipy.oauth2 import SpotifyClientCredentials
 from concurrent.futures import ThreadPoolExecutor
 
 import os
+import time
 
 class SpotifyAPIService:
     
@@ -32,19 +33,10 @@ class SpotifyAPIService:
         artist = results["artists"]["items"][0]
         return artist
 
-    def get_albums_of_artist(self,artist_id:str,limit:int=50,max_workers:int=10):
+    def get_albums_of_artist(self,artist_id:str,limit:int=20):
         # アーティストIDからアルバム情報を取得
-        albums = []
-        with ThreadPoolExecutor(max_workers=max_workers) as executor:
-            futures = []
-            for i in range(max_workers):
-                future = executor.submit(self.spotify.artist_albums, artist_id, limit=limit, album_type='album,single')
-                futures.append(future)
-            for future in futures: 
-                if not future.result():
-                    break   
-                albums.extend(future.result()['items'])
-                
+        albums = self.spotify.artist_albums(artist_id, limit=limit, album_type='album,single',offset=0)['items']
+
         albums_dict = {}
         for album in albums:
             albums_dict[album['id']] = album
@@ -61,11 +53,11 @@ class SpotifyAPIService:
         tracks = []
         with ThreadPoolExecutor(max_workers=len(album_ids)) as executor:
             futures = []
-            for album_id in album_ids:
+            for album_id in album_ids: 
                 future = executor.submit(self.spotify.album_tracks,album_id,limit=limit)
                 futures.append(future)
             for future in futures: 
-                if not future.result():
+                if not future.result()['items']:
                     continue
                 tracks.extend(future.result()['items'])
         tracks_dict ={}
@@ -77,13 +69,31 @@ class SpotifyAPIService:
         track_features = []
         max = 100
         i = 0
-        while i < len(track_ids)//100*100:
-            pre_i = i
-            i += max
-            track_features.extend(self.spotify.audio_features(track_ids[pre_i:i]))
-        track_features.extend(self.spotify.audio_features(track_ids[i:]))
-
+        with ThreadPoolExecutor(max_workers=len(track_ids)//100+1) as executor:
+            futures = []
+            while i < len(track_ids)//100*100:
+                pre_i = i
+                i += max
+                future = executor.submit(self.spotify.audio_features,track_ids[pre_i:i])
+                futures.append(future)
+            future = executor.submit(self.spotify.audio_features,track_ids[i:])
+            futures.append(future)
+            for future in futures:
+                track_features.extend(future.result())
+            
         track_features_dict = {}
         for track_feature in track_features:
             track_features_dict[track_feature['id']] = track_feature
         return track_features_dict
+
+    def search(self,q:str,type:str,limit:int=20):
+        data = self.spotify.search(q=q,limit=limit,type=type,market='JP')
+        return data
+    
+    def get_artist_related_artists(self,artist_id:str):
+        artists = self.spotify.artist_related_artists(artist_id)
+        return artists
+
+    def get_track(self,track_id:str):
+        track = self.spotify.track(track_id)
+        return track

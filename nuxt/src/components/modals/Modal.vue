@@ -100,7 +100,7 @@ export default Vue.extend({
     .modal_field{
         padding: 30px;
         position: relative;
-        height: 80%;
+        height: 85%;
     }
     .modal_field h2{
         text-align: center;

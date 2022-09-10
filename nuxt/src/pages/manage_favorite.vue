@@ -11,7 +11,7 @@
          />
         <div class="container" v-else> 
             <div class="delete_favorite_button_wrapper">
-                <span @click="showDeleteFavoriteModal">お気に入り曲を管理</span>
+                <span @click="showDeleteFavoriteModal">お気に入り曲一覧</span>
             </div>
             <MusicGraphArea v-if="favoriteMusicInfos.length > 0"
                 :music-infos="favoriteMusicInfos" 

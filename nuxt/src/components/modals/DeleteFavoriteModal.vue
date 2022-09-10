@@ -1,17 +1,27 @@
 <template>
     <div>
-        <h2>お気に入り曲を削除</h2>
         <div v-if="favoriteMusicInfos.length === 0">
             <p>お気に入り曲が登録されていません。</p>
         </div>
-        <div class="favorite_infos">
-            <div class="favorite_info" v-for="favoriteMusicInfo in favoriteMusicInfos" :key="favoriteMusicInfo.music_id">
-                <input type="checkbox" :id="favoriteMusicInfo.music_id" :value="favoriteMusicInfo.favorite_music_id" v-model="selectedMusicIds">
-                {{ favoriteMusicInfo.music_name }}
+        <div class="favorite_musics">
+            <div class="favorite_music" v-for="favoriteMusicInfo in favoriteMusicInfos" :key="favoriteMusicInfo.music_id">
+                <div class="favorite_music_menu">
+                    <input type="checkbox" :id="favoriteMusicInfo.music_id" :value="favoriteMusicInfo.favorite_music_id" v-model="selectedMusicIds">
+                    <a :href="'https://open.spotify.com/track/' + favoriteMusicInfo.music_id" target="_blank" class="listen_to_spotify">Spotifyで聴く</a>
+                </div>
+                <iframe
+                    style="border-radius:12px"
+                    :src="'https://open.spotify.com/embed/track/'+favoriteMusicInfo.music_id+'?utm_source=generator'"
+                    width="100%"
+                    height="80"
+                    frameBorder="0"
+                    allowfullscreen=""
+                    allow="autoplay; clipboard-write; fullscreen; picture-in-picture">
+                </iframe>
             </div>
         </div>
-        <div class="submit_field" v-if="favoriteMusicInfos.length > 0">
-            <span @click="deleteFavorite">削除</span>
+        <div class="submit_field" v-if="favoriteMusicInfos.length > 0 && selectedMusicIds.length > 0">
+            <span @click="deleteFavorite">選択したお気に入り曲を削除</span>
         </div>
     </div>
 </template>
@@ -65,3 +75,26 @@ export default Vue.extend({
     }
 })
 </script>
+<style scoped>
+    .favorite_musics{
+        padding: 0 5em;
+        overflow-y: scroll;
+        height: 60vh;
+        align-content: baseline;
+    }
+    .favorite_music{
+        padding: 5px 10px;
+        margin: 10px;
+    }
+    .listen_to_spotify{
+        text-decoration: none;
+        border-radius: 50px;
+        padding: 5px;
+        color: white;
+        background: black;
+        font-size: 14px;
+    }
+    .favorite_music_menu{
+        margin: 5px 0;
+    }
+</style>

@@ -32,7 +32,7 @@ export default Vue.extend({
     .search_music_wrapper{
         position: fixed;
         top: 15%;
-        left: 3%;
+        left: 2.4%;
         margin: auto;
     }
     .search_music_wrapper input{

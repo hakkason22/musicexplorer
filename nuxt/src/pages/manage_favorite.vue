@@ -64,15 +64,14 @@ export default Vue.extend({
     }
     .delete_favorite_button_wrapper { 
         position: fixed;
-        top: 85px;
-        left: 50px;
+        top: 84px;
+        left: 2.5%;
     }
     .delete_favorite_button_wrapper span{
         cursor: pointer;
         background:white;
         padding: 10px;
         margin: 10px 0;
-        border-radius: 50px;
-        font-weight: bold;
+        border-radius: 0.5rem;
     }
 </style>

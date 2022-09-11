@@ -24,6 +24,7 @@
     />
     <SearchMusic
         @displayDetail="displayDetail"
+        class = "search_music"
     />
     <div class="conpass">
         <svg 

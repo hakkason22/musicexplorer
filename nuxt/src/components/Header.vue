@@ -8,7 +8,7 @@
         <p>{{ user_name }}</p>
         <p v-if="$store.getters.isAuthenticated" @click="signOut">ログアウト</p>
         <p v-else @click="openLoginModal">ログイン</p>
-        <input v-if="$route.path === '/' && Object.keys($route.query).length != 0" type="text" v-model="artist_name" placeholder="artist name" @keypress.enter="onSubmit">
+        <input v-if="$route.path === '/' && Object.keys($route.query).length != 0" type="text" v-model="artist_name" placeholder="アーティスト名" @keypress.enter="onSubmit">
     </div>
     
 </div>

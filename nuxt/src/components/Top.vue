@@ -1,8 +1,10 @@
 <template>
     <div class="top_wrapper">
-        <h1 class="top_message">Welcome to MusicExplorer, </h1>
+        <h1 class="top_message">MusicExplorerへようこそ!</h1>
         <div class="search_bar_wrapper">
-            <input class="search_bar_item top_input_area" type="text" v-model="artist_name" placeholder="search your favorite artists." @keypress.enter="onSubmit">
+            
+            <font-awesome-icon icon="fa-solid fa-magnifying-glass" class="search-icon"/>
+            <input class="search_bar_item top_input_area" type="text" v-model="artist_name" placeholder='アーティスト名' @keypress.enter="onSubmit">
             <div class="search_bar_item help">
                 <a @click.prevent='showUsageModal'>
                     <img src="../images/help.svg" alt="">
@@ -10,6 +12,7 @@
             </div>
             <!-- /.help -->
         </div>
+        <!-- /.input-var -->
 
         <div class="recommend_artist_wrapper" v-if="recommend_artists.length > 0">
             <a href="#" class="recommend_artist_item" v-for="artist in recommend_artists" :key="artist.id" @click.prevent="searchMusics(artist.name)">
@@ -86,16 +89,28 @@ export default Vue.extend({
         font-size: 20px;
         border-radius: 30px;
         padding: 0px 20px;
+        padding-left: 4%;
     }
 
     .search_bar_wrapper{
         display: flex;
         justify-content: center;
         align-items: center;
+        height: 15%;
+        width: 100%;
+        position: relative;
     }
 
     .search_bar_item{
         margin: 0 5px;
+    }
+
+    .search-icon{
+        color: rgba(0, 0, 0, 0.5);
+        position: absolute;
+        top: 40%;
+        left: 31.5%;
+        height: 20%;
     }
 
     .help{
